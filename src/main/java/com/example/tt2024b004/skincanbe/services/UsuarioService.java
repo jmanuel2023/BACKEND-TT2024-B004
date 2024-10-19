@@ -1,11 +1,12 @@
 package com.example.tt2024b004.skincanbe.services;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,8 +31,26 @@ public class UsuarioService {
 
     @Autowired
     private JavaMailSender mailSender;
-
     
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    public Usuario resetNewPassword(String correo, String newPassword){
+        System.out.println("Entre al metodo resetNewPassword del servicio de usuario");
+        Usuario usuario = usuarioRepository.encontrarCorreo(correo);
+        System.out.println(usuario);
+    if (usuario == null) {
+        System.out.println("Entre al if de usuario null, del servicio de usuario");
+        return null;
+    }
+    else{
+        System.out.println("Entre al else del usuario null, del servicio de usuario");
+        usuario.setPassword(passwordEncoder.encode(newPassword));
+        return usuarioRepository.save(usuario);
+    }
+
+    }
+
     //Servicio para obtener un usuario con un cierto correo
     public boolean existsByCorreo(String correo){
         return usuarioRepository.existsByCorreo(correo);
@@ -87,19 +106,65 @@ public class UsuarioService {
         return usuarioRepository.save(usuario); 
     }
 
-    // Obtener usuarios por nombre. Aqui usamos un metodo de UsuarioRepository
-    public List<Usuario> obtenerUsuariosPorNombre(String nombre){
-        return usuarioRepository.findByNombre(nombre);
+    public Usuario crearUsuario(Map<String,Object> payload) throws MessagingException{
+        String tipoUsuario = (String) payload.get("tipo_usuario");
+        Usuario usuario;
+
+        if ("Especialista".equals(tipoUsuario)) {
+            Especialista especialista = new Especialista();
+            especialista.setCedula((String) payload.get("cedula"));
+            usuario = especialista;
+        } else if ("Paciente".equals(tipoUsuario)) {
+            usuario = new Paciente();
+        } else {
+            usuario = new Usuario(); 
+        }
+        //Verificamos si el correo ya existe, ya que debe de ser unico.
+        if(existsByCorreo((String) payload.get("correo"))){
+            throw new IllegalArgumentException("Esta correo ya esta registrado!");
+        }else {
+            int edadN = (Integer) payload.get("edad");
+            usuario.setNombre((String) payload.get("nombre"));
+            usuario.setApellidos((String) payload.get("apellidos"));
+            usuario.setEdad(edadN);
+            usuario.setCorreo((String) payload.get("correo"));
+            String passwordN = (String) payload.get("password");
+            String passwordEncoded = passwordEncoder.encode(passwordN);
+            usuario.setPassword(passwordEncoded);
+
+            // Guardar el usuario en la base de datos
+            return guardarUsuario(usuario);
+        }
     }
 
-    // Obtener un especialista por cedula. Aqui usamos un metodo de UsuarioRepository
-    public Especialista obtenerEspecialistaPorCedula (String cedula){
-        List<Especialista> especialista = usuarioRepository.findByCedula(cedula);
-        return especialista.isEmpty() ? null: especialista.get(0);
+    public void sendPasswordResetEmail (Usuario usuario, String token) throws MessagingException {
+        MimeMessage mensaje = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mensaje, true);
+
+        helper.setTo(usuario.getCorreo());
+        helper.setSubject("SKINCANBE: RECUPERACIÓN DE CONTRASEÑA");
+
+        String contenidoHtml = "<html>"
+                + "<body>"
+                + "<h1 style='color: #2e6c80;'>Recupera tu contraseña</h1>"
+                + "<p>Hola, " + usuario.getNombre() + "</p>"
+                + "<p>Gracias por recuperar tu contraseña. SkinCanbe agradece que te preocupas por tu piel<p>"
+                +" <p>Haz clic en el siguiente enlace para recuperar tu contraseña:</p>"
+                + "<a href='http://192.168.100.63:8080/reset-password?token=" + token + "' style='padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none;'>Recuperar mi contraseña</a>"
+                + "<p>Si no solicitaste esta recuperación de contraseña, puedes ignorar este mensaje.</p>"
+                + "<p>Saludos,</p>"
+                + "<p>Equipo de SkinCanBe</p>"
+                + "</body>"
+                + "</html>";
+
+        // Configura el contenido como HTML
+        helper.setText(contenidoHtml, true);
+
+        // Enviar el correo
+        mailSender.send(mensaje);
     }
 
-    // Obtener todos los pacientes. Aqui usamos un metodo de UsuarioRepository
-    public List<Paciente> obtenerTodosLosPacientes() {
-        return usuarioRepository.findAllPacientes();
+    public Usuario existsByEmailUsuario(String correo){
+        return usuarioRepository.encontrarCorreo(correo);
     }
 }

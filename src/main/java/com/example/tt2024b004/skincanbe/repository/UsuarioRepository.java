@@ -29,4 +29,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Long> {
     @Query(value = "SELECT * FROM usuario WHERE tipo_usuario = 'Paciente'", nativeQuery = true)
     List<Paciente> findAllPacientes();
 
+    //Consulta para buscar el usuario con un correo en especifico
+    @Query(value = "SELECT * FROM usuario WHERE correo = ?1", nativeQuery = true)
+    Usuario encontrarCorreo(String correo);
+
 }

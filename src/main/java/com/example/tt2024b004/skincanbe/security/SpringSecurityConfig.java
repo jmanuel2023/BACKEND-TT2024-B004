@@ -52,6 +52,8 @@ public class SpringSecurityConfig {
          return http.authorizeHttpRequests((authz) -> authz
                  .requestMatchers("/crear").permitAll()
                 .requestMatchers("/validar").permitAll()
+                .requestMatchers("/forgotpassword").permitAll()
+                .requestMatchers("/reset-password").permitAll()
                  // .requestMatchers(HttpMethod.POST, "/api/products").hasRole("ADMIN")
                  // .requestMatchers(HttpMethod.PUT, "/api/products/{id}").hasRole("ADMIN")
                  // .requestMatchers(HttpMethod.DELETE, "/api/products/{id}").hasRole("ADMIN")
