@@ -68,6 +68,18 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String nombre = user.getNombre();
         String apellidos = user.getApellidos();
         String tipoUsuario = user.getTipoUsuario();
+        String status = user.getStatus();
+
+        // Verificación de que el status sea Activo 
+        if (!status.equals("Activo")) {
+            // Si el usuario no ha verificado su correo, retorna un mensaje de error
+            Map<String, String> body = new HashMap<>();
+            body.put("message", "Debe confirmar su correo electrónico antes de iniciar sesión.");
+            response.getWriter().write(new ObjectMapper().writeValueAsString(body));
+            response.setStatus(403); // Forbidden
+            response.setContentType(CONTENT_TYPE);
+            return;
+        }
 
         Claims claims = Jwts.claims()
                 .add("username", email)

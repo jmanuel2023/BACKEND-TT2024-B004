@@ -10,12 +10,14 @@ public class CustomUserDetails extends org.springframework.security.core.userdet
     private String tipoUsuario;
     private String nombre;
     private String apellidos;
+    private String status;
 
     public CustomUserDetails(Usuario user, String tipoUsuario, List<GrantedAuthority> authorities) {
         super(user.getCorreo(), user.getPassword(), authorities);
         this.tipoUsuario = tipoUsuario;
         this.nombre = user.getNombre();
         this.apellidos = user.getApellidos();
+        this.status = user.getStatus();
     }
 
     public String getTipoUsuario() {
@@ -26,5 +28,8 @@ public class CustomUserDetails extends org.springframework.security.core.userdet
     }
     public String getApellidos() {
         return apellidos;
+    }
+    public String getStatus() {
+        return status;
     }
 }
