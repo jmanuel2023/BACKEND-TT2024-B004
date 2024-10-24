@@ -69,6 +69,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String apellidos = user.getApellidos();
         String tipoUsuario = user.getTipoUsuario();
         String status = user.getStatus();
+        String id_usuario = user.getId();
 
         // Verificación de que el status sea Activo 
         if (!status.equals("Activo")) {
@@ -86,6 +87,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .add("tipoUsuario", tipoUsuario)
                 .add("nombre", nombre)
                 .add("apellidos", apellidos)
+                .add("id", id_usuario)
         .build();
 
 
@@ -105,7 +107,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         body.putIfAbsent("nombre", nombre);
         body.put("apellidos", apellidos);
         body.put("tipoUsuario", tipoUsuario);
-        body.put("message", String.format("Has iniciado sesion con exito!"));
+        body.put("Id", id_usuario);
+        body.put("messages", String.format("Has iniciado sesion con exito!"));
 
         response.getWriter().write(new ObjectMapper().writeValueAsString(body));
         response.setContentType(CONTENT_TYPE);
