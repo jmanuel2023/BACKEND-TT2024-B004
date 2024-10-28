@@ -1,0 +1,20 @@
+@RestController
+@RequestMapping("/api/lesiones")
+public class LesionController {
+
+    private final ReporteService reporteService;
+
+    public LesionController(ReporteService reporteService) {
+        this.reporteService = reporteService;
+    }
+
+    @PostMapping("/generar-reporte/{lesionId}")
+    public ResponseEntity<String> generarYEnviarReporte(@PathVariable Long lesionId) {
+        try {
+            reporteService.generarYEnviarReporte(lesionId);
+            return ResponseEntity.ok("Reporte generado y enviado correctamente.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al generar o enviar el reporte.");
+        }
+    }
+}
