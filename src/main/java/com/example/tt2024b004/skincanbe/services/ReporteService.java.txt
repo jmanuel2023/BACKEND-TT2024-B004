@@ -1,0 +1,57 @@
+@Service
+public class ReporteService {
+
+    private final LesionRepository lesionRepository;
+    private final ReporteRepository reporteRepository;
+    private final EmailService emailService; // Servicio para enviar correo
+
+    public ReporteService(LesionRepository lesionRepository, ReporteRepository reporteRepository, EmailService emailService) {
+        this.lesionRepository = lesionRepository;
+        this.reporteRepository = reporteRepository;
+        this.emailService = emailService;
+    }
+
+    public Reporte generarYEnviarReporte(Long lesionId) throws Exception {
+        // Buscar la lesión
+        Lesion lesion = lesionRepository.findById(lesionId)
+                .orElseThrow(() -> new RuntimeException("Lesión no encontrada"));
+
+        // Verificar si ya existe un reporte asociado
+        Optional<Reporte> existingReporte = reporteRepository.findByLesion(lesion);
+        if (existingReporte.isPresent()) {
+            // Si ya existe, retornar el reporte existente
+            enviarCorreoReporte(existingReporte.get());
+            return existingReporte.get();
+        }
+
+        // Crear y guardar el nuevo reporte
+        Reporte nuevoReporte = new Reporte();
+        nuevoReporte.setLesion(lesion);
+        nuevoReporte.setContenido("Detalles del reporte de la lesión..."); // Generar contenido
+
+        reporteRepository.save(nuevoReporte);
+
+        // Generar el PDF (función ficticia `generarPDFReporte`)
+        byte[] pdfBytes = generarPDFReporte(nuevoReporte);
+
+        // Enviar el PDF por correo
+        enviarCorreoReporte(nuevoReporte, pdfBytes);
+
+        return nuevoReporte;
+    }
+
+    private byte[] generarPDFReporte(Reporte reporte) {
+        // Generar el PDF del reporte. Puedes usar bibliotecas como iText o Apache PDFBox
+        // Aquí va el código para generar el PDF
+        return new byte[0]; // Placeholder: Retorna el PDF en bytes
+    }
+
+    private void enviarCorreoReporte(Reporte reporte, byte[] pdfBytes) throws Exception {
+        // Configurar y enviar el correo electrónico con el PDF adjunto
+        String destinatario = reporte.getLesion().getUsuario().getEmail();
+        String asunto = "Reporte de Lesión: " + reporte.getLesion().getNombre_lesion();
+        String mensaje = "Adjunto se encuentra el reporte de la lesión solicitada.";
+
+        emailService.sendEmailWithAttachment(destinatario, asunto, mensaje, pdfBytes, "reporte_lesion.pdf");
+    }
+}
