@@ -18,6 +18,11 @@ public class EmailService {
     private JavaMailSender mailSender;
 
     public void sendEmailWithAttachment(String to, String subject, String text, String filename) throws MessagingException {
+        System.out.println("Entre al metodo sendEmailWithAttachment del servicio EmailService");
+        System.out.println(to);
+        System.out.println(subject);
+        System.out.println(text);
+        System.out.println(filename);
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
@@ -29,6 +34,7 @@ public class EmailService {
         helper.addAttachment(fileResource.getFilename(), fileResource);
 
         mailSender.send(message);
+        System.out.println("Se mando el correo");
     }
 }
 
