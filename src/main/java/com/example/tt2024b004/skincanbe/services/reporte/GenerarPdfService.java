@@ -20,6 +20,7 @@ import com.itextpdf.layout.element.Paragraph;
 public class GenerarPdfService {
 
     public ByteArrayOutputStream generarPdfDeLesion(Lesion lesion) throws IOException {
+        System.out.println("Inicio del metodo generarPdfDeLesion del servicio GenerarPdfService");
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
         // Crear el PDF Writer
@@ -34,7 +35,9 @@ public class GenerarPdfService {
 
         // Agregar imagen (si existe)
         if (lesion.getImagen() != null) {
+            System.out.println("Entre al if de que la imagen de la lesion existe");
             String imagePath = "src/main/resources/static/images/" + lesion.getImagen(); // Ruta a la imagen guardada
+            System.out.println(imagePath);
             ImageData imageData = ImageDataFactory.create(imagePath);
             Image image = new Image(imageData);
             document.add(image);
