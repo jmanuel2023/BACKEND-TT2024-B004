@@ -2,6 +2,7 @@ package com.example.tt2024b004.skincanbe.services;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -34,6 +35,10 @@ public class UsuarioService {
     
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    public Optional<Usuario> findById(Long id){
+        return usuarioRepository.findById(id);
+    }
 
     public Usuario resetNewPassword(String correo, String newPassword){
         System.out.println("Entre al metodo resetNewPassword del servicio de usuario");

@@ -1,5 +1,0 @@
-// Repositorio para Reporte
-@Repository
-public interface ReporteRepository extends JpaRepository<Reporte, Long> {
-    Optional<Reporte> findByLesion(Lesion lesion);
-}

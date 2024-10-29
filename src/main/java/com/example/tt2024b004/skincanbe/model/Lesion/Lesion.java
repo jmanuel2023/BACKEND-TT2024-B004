@@ -1,16 +1,16 @@
 package com.example.tt2024b004.skincanbe.model.Lesion;
 
 import com.example.tt2024b004.skincanbe.model.Usuario;
-//import com.example.tt2024b004.skincanbe.model.Reporte.Reporte;
+import com.example.tt2024b004.skincanbe.model.Reporte.Reporte;
 
-//import jakarta.persistence.CascadeType;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-// import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Lesion {
@@ -27,8 +27,8 @@ public class Lesion {
     @JoinColumn(name="usuario_id")
     private Usuario usuario;
 
-    // @OneToOne(mappedBy = "lesion", cascade = CascadeType.ALL)
-    // private Reporte reporte;
+    @OneToOne(mappedBy = "lesion", cascade = CascadeType.ALL)
+    private Reporte reporte;
 
     //Getters and Setters
 

@@ -44,7 +44,7 @@ public class LesionService {
         lesion.setDescripcion(descripcion);
 
         if(!imagen.isEmpty()){
-            String imageFileName = System.currentTimeMillis() + " "+ imagen.getOriginalFilename();
+            String imageFileName = System.currentTimeMillis() + "_"+ imagen.getOriginalFilename();
             Path imagePath = Paths.get(uploadDir + imageFileName);
             Files.copy(imagen.getInputStream(), imagePath, StandardCopyOption.REPLACE_EXISTING);
             lesion.setImagen(imageFileName); 

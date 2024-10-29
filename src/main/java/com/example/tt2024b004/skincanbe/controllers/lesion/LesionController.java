@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +27,7 @@ public class LesionController {
     private LesionService lesionService;
 
     @PostMapping("/register-injury")
-    public ResponseEntity<?> registrarLesion (
+    public ResponseEntity<Lesion> registrarLesion (
         @RequestParam("id_usuario") Long usuarioId,
         @RequestParam("nombre_lesion") String nombreLesion,
         @RequestParam("descripcion") String descripcion,
@@ -34,9 +35,9 @@ public class LesionController {
             System.out.println("Ya estoy en el controlador de la lesion");
         try {
             Lesion lesion = lesionService.guardarLesion(usuarioId, nombreLesion, descripcion, imagen);
-            return ResponseEntity.ok(lesion);
+            return ResponseEntity.status(HttpStatus.CREATED).body(lesion);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 

@@ -1,14 +1,23 @@
+package com.example.tt2024b004.skincanbe.services.reporte;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+import org.springframework.stereotype.Service;
+
+import com.example.tt2024b004.skincanbe.model.Lesion.Lesion;
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
-import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Image;
-import java.io.ByteArrayOutputStream;
+import com.itextpdf.layout.element.Paragraph;
+
+
 
 @Service
-public class GenerarPdf {
+public class GenerarPdfService {
 
     public ByteArrayOutputStream generarPdfDeLesion(Lesion lesion) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

@@ -1,17 +1,17 @@
 package com.example.tt2024b004.skincanbe.model.Reporte;
 
-import java.util.List;
+// import java.util.List;
 
 import com.example.tt2024b004.skincanbe.model.Lesion.Lesion;
-import com.example.tt2024b004.skincanbe.model.Observacion.Observacion;
+// import com.example.tt2024b004.skincanbe.model.Observacion.Observacion;
 
-import jakarta.persistence.CascadeType;
+// import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
+// import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
 @Entity
@@ -27,8 +27,8 @@ public class Reporte {
     @JoinColumn(name= "lesion_id")
     private Lesion lesion;
 
-    @OneToMany(mappedBy = "reporte", cascade = CascadeType.ALL)
-    private List<Observacion> observaciones;
+    /*@OneToMany(mappedBy = "reporte", cascade = CascadeType.ALL)
+    private List<Observacion> observaciones;*/
 
     public Long getId_reporte() {
         return id_reporte;
@@ -62,13 +62,13 @@ public class Reporte {
         this.lesion = lesion;
     }
 
-    public List<Observacion> getObservaciones() {
+    /*public List<Observacion> getObservaciones() {
         return observaciones;
     }
 
     public void setObservaciones(List<Observacion> observaciones) {
         this.observaciones = observaciones;
-    }
+    }*/
 
     
 }
