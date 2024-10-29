@@ -35,7 +35,7 @@ public class ReporteService {
     private GenerarPdfService generarPdfService;
 
     public Reporte generarYEnviarReporte(Long lesionId) throws Exception {
-        system.out.println("Inicio del metodo generarYEnviarReporte");
+        System.out.println("Inicio del metodo generarYEnviarReporte");
         Lesion lesion = lesionRepository.findById(lesionId)
                 .orElseThrow(() -> new RuntimeException("Lesión no encontrada"));
 
@@ -43,43 +43,53 @@ public class ReporteService {
         Optional<Reporte> existeReporte = reporteRepository.findByLesion(lesion);
         if (existeReporte.isPresent()) {
             // Si ya existe, retornar el reporte existente
-            system.out.println("Ya existe el reporte");
+            System.out.println("Ya existe el reporte");
             String rutacompleta=rutaReporte + existeReporte.get().getId_reporte()+".pdf";
-            system.out.println(rutacompleta);
+            System.out.println(rutacompleta);
             enviarCorreoReporte(existeReporte.get(), rutacompleta);
             return existeReporte.get();
         } else {
             // Crear y guardar el nuevo reporte
-            system
+            System.out.println("No existe el reporte, se creará");
             Reporte nuevoReporte = new Reporte();
             DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-mm-yyyy HH:mm:ss");
             nuevoReporte.setLesion(lesion);
 
             Optional<Usuario> usuario = usuarioService.findById(lesion.getUsuario().getId());
             if (usuario.isPresent()) {
+                System.out.println("Existe el usuario relacionado con la lesion");
                 nuevoReporte.setFecha_generacion(LocalDateTime.now().format(formato));
+                System.out.println(LocalDateTime.now().format(formato));
                 nuevoReporte.setDescripcion("Reporte de la lesion del Paciente" + usuario.get().getNombre() + " "
                         + usuario.get().getApellidos());
+                System.out.println(usuario.get().getNombre());
+                System.out.println(usuario.get().getApellidos());
                 reporteRepository.save(nuevoReporte);
-                // Generar el PDF (función ficticia `generarPDFReporte`)
+                System.out.println("Se ha guardado el reporte");
                 String file = generarPDFReporte(nuevoReporte);
+                System.out.println(file);
                 // Enviar el PDF por correo
                 enviarCorreoReporte(nuevoReporte, file);
+                System.out.println("Se ha mandado el correo electrónico");
                 return nuevoReporte;
             } else {
+                System.out.println("No existe usuario relacionado con la lesión");
                 return null;
             }
         }
     }
 
     private String generarPDFReporte(Reporte reporte) throws IOException {
+        System.out.println("Inicio del metodo generarPDFReporte");
         Lesion lesion = reporte.getLesion();
         if (lesion == null) {
+            System.out.println("El reporte no tiene lesión asociada");
             throw new IllegalArgumentException("El reporte no tiene una lesion asociada");
         } else {
+            System.out.println("Se empieza a generar el reporte");
             ByteArrayOutputStream baos = generarPdfService.generarPdfDeLesion(lesion);
-            String filePath = "src/main/resources/static/reportes/reporte_" + reporte.getId_reporte() + ".pdf"; // Asumiendo que el
-                                                                                                                // reporte tiene un ID
+            String filePath = rutareporte + reporte.getId_reporte() + ".pdf"; // Asumiendo que el reporte tiene un ID
+            System.out.println(filePath);
             try (FileOutputStream fos = new FileOutputStream(filePath)) {
                 baos.writeTo(fos);
             }
@@ -90,10 +100,14 @@ public class ReporteService {
 
     private void enviarCorreoReporte(Reporte reporte, String archivo) throws Exception {
         // Configurar y enviar el correo electrónico con el PDF adjunto
+        System.out.println("Inicio del metodo enviarCorreoReporte");
         String destinatario = reporte.getLesion().getUsuario().getCorreo();
+        System.out.println(destinatario);
         String asunto = "Reporte de Lesión: " + reporte.getLesion().getNombre_lesion();
+        System.out.println(asunto);
         String mensaje = "Hola, adjuntamos el reporte en formato pdf de la lesión solicitada."
                 + "Equipo de Skincanbe.Saludos";
+        System.out.println(mensaje);
 
         emailService.sendEmailWithAttachment(destinatario, asunto, mensaje,archivo);
     }
