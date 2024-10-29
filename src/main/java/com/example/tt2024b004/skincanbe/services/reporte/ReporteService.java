@@ -20,6 +20,8 @@ import com.example.tt2024b004.skincanbe.services.UsuarioService;
 @Service
 public class ReporteService {
 
+    private String rutaReporte = "src/main/resources/static/reportes";
+
     @Autowired
     private LesionRepository lesionRepository;
     @Autowired
@@ -33,6 +35,7 @@ public class ReporteService {
     private GenerarPdfService generarPdfService;
 
     public Reporte generarYEnviarReporte(Long lesionId) throws Exception {
+        system.out.println("Inicio del metodo generarYEnviarReporte");
         Lesion lesion = lesionRepository.findById(lesionId)
                 .orElseThrow(() -> new RuntimeException("Lesión no encontrada"));
 
@@ -40,10 +43,14 @@ public class ReporteService {
         Optional<Reporte> existeReporte = reporteRepository.findByLesion(lesion);
         if (existeReporte.isPresent()) {
             // Si ya existe, retornar el reporte existente
-            enviarCorreoReporte(existeReporte.get(), "src/main/resources/static/reportes/reporte_" + existeReporte.get().getId_reporte() + ".pdf");
+            system.out.println("Ya existe el reporte");
+            String rutacompleta=rutaReporte + existeReporte.get().getId_reporte()+".pdf";
+            system.out.println(rutacompleta);
+            enviarCorreoReporte(existeReporte.get(), rutacompleta);
             return existeReporte.get();
         } else {
             // Crear y guardar el nuevo reporte
+            system
             Reporte nuevoReporte = new Reporte();
             DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-mm-yyyy HH:mm:ss");
             nuevoReporte.setLesion(lesion);
