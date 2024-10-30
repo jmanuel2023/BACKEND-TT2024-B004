@@ -20,7 +20,7 @@ import com.example.tt2024b004.skincanbe.services.UsuarioService;
 @Service
 public class ReporteService {
 
-    private String rutaReporte = "src/main/resources/static/reportes";
+    private String rutaReporte = "src/main/resources/static/reportes/";
 
     @Autowired
     private LesionRepository lesionRepository;
@@ -44,7 +44,7 @@ public class ReporteService {
         if (existeReporte.isPresent()) {
             // Si ya existe, retornar el reporte existente
             System.out.println("Ya existe el reporte");
-            String rutacompleta=rutaReporte + existeReporte.get().getId_reporte()+".pdf";
+            String rutacompleta=rutaReporte + existeReporte.get().getDescripcion()+".pdf";
             System.out.println(rutacompleta);
             enviarCorreoReporte(existeReporte.get(), rutacompleta);
             return existeReporte.get();
@@ -52,7 +52,7 @@ public class ReporteService {
             // Crear y guardar el nuevo reporte
             System.out.println("No existe el reporte, se creará");
             Reporte nuevoReporte = new Reporte();
-            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-mm-yyyy HH:mm:ss");
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
             nuevoReporte.setLesion(lesion);
 
             Optional<Usuario> usuario = usuarioService.findById(lesion.getUsuario().getId());
@@ -60,8 +60,8 @@ public class ReporteService {
                 System.out.println("Existe el usuario relacionado con la lesion");
                 nuevoReporte.setFecha_generacion(LocalDateTime.now().format(formato));
                 System.out.println(LocalDateTime.now().format(formato));
-                nuevoReporte.setDescripcion("Reporte de la lesion del Paciente" + usuario.get().getNombre() + " "
-                        + usuario.get().getApellidos());
+                nuevoReporte.setDescripcion("Reporte de la lesion del Paciente " + usuario.get().getNombre() + " "
+                        + usuario.get().getApellidos()+" "+usuario.get().getId());
                 System.out.println(usuario.get().getNombre());
                 System.out.println(usuario.get().getApellidos());
                 reporteRepository.save(nuevoReporte);
@@ -88,7 +88,7 @@ public class ReporteService {
         } else {
             System.out.println("Se empieza a generar el reporte");
             ByteArrayOutputStream baos = generarPdfService.generarPdfDeLesion(lesion);
-            String filePath = rutareporte + reporte.getId_reporte() + ".pdf"; // Asumiendo que el reporte tiene un ID
+            String filePath = rutaReporte + reporte.getDescripcion() + ".pdf"; // Asumiendo que el reporte tiene un ID
             System.out.println(filePath);
             try (FileOutputStream fos = new FileOutputStream(filePath)) {
                 baos.writeTo(fos);

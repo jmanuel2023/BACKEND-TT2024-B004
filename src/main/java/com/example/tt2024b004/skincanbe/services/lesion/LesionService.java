@@ -22,7 +22,7 @@ import com.example.tt2024b004.skincanbe.repository.lesion.LesionRepository;
 
 @Service
 public class LesionService {
-    private final String uploadDir = "src/main/resources/static/images"; 
+    private final String uploadDir = "src/main/resources/static/images/"; 
     
     @Autowired
     private LesionRepository lesionRepository;
@@ -46,6 +46,7 @@ public class LesionService {
         if(!imagen.isEmpty()){
             String imageFileName = System.currentTimeMillis() + "_"+ imagen.getOriginalFilename();
             Path imagePath = Paths.get(uploadDir + imageFileName);
+            System.out.println(uploadDir+imageFileName);
             Files.copy(imagen.getInputStream(), imagePath, StandardCopyOption.REPLACE_EXISTING);
             lesion.setImagen(imageFileName); 
 
