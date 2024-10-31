@@ -12,6 +12,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 
+@Getter
+@Setter
 @Entity
 public class Lesion {
     @Id
@@ -30,7 +32,7 @@ public class Lesion {
     @OneToOne(mappedBy = "lesion", cascade = CascadeType.ALL)
     private Reporte reporte;
 
-    //Getters and Setters
+    /*Getters and Setters
 
     public Long getId_lesion() {
         return id_lesion;
@@ -80,11 +82,11 @@ public class Lesion {
         this.usuario = usuario;
     }
 
-    // public Reporte getReporte() {
-    //     return reporte;
-    // }
+    public Reporte getReporte() {
+         return reporte;
+    }
 
-    // public void setReporte(Reporte reporte) {
-    //     this.reporte = reporte;
-    // }
+    public void setReporte(Reporte reporte) {
+         this.reporte = reporte;
+    }*/
 }
