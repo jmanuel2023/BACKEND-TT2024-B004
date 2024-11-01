@@ -31,6 +31,13 @@ public class UsuarioController {
     private TokenVerificacionService tokenVerificacionService;
 
     @Transactional
+    @GetMapping("/allSpecialist")
+    public ResponseEntity<List<Usuario>> obtenerTodosLosEspecialistas() {
+        List<Usuario> especialistas= usuarioService.obtenerTodosLosEspecialistas();
+        return ResponseEntity.ok(especialistas);
+    }
+    
+    @Transactional
     @GetMapping("/validar")
     ResponseEntity<?> validarCorreo(@RequestParam("token") String token){
 
