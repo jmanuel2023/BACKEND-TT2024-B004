@@ -61,13 +61,13 @@ public class ReporteService {
                 nuevoReporte.setFecha_generacion(LocalDateTime.now().format(formato));
                 System.out.println(LocalDateTime.now().format(formato));
                 nuevoReporte.setDescripcion("Reporte de la lesion del Paciente " + usuario.get().getNombre() + " "
-                        + usuario.get().getApellidos()+" "+usuario.get().getId());
+                        + usuario.get().getApellidos()+" "+lesion.getId_lesion());
                 System.out.println(usuario.get().getNombre());
                 System.out.println(usuario.get().getApellidos());
-                reporteRepository.save(nuevoReporte);
-                System.out.println("Se ha guardado el reporte");
                 String file = generarPDFReporte(nuevoReporte);
                 System.out.println(file);
+                reporteRepository.save(nuevoReporte);
+                System.out.println("Se ha guardado el reporte");
                 // Enviar el PDF por correo
                 enviarCorreoReporte(nuevoReporte, file);
                 System.out.println("Se ha mandado el correo electrónico");

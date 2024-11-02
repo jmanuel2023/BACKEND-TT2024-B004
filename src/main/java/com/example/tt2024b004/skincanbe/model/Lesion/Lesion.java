@@ -2,6 +2,7 @@ package com.example.tt2024b004.skincanbe.model.Lesion;
 
 import com.example.tt2024b004.skincanbe.model.Usuario;
 import com.example.tt2024b004.skincanbe.model.Reporte.Reporte;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -11,6 +12,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -26,6 +29,7 @@ public class Lesion {
     private String imagen;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name="usuario_id")
     private Usuario usuario;
 

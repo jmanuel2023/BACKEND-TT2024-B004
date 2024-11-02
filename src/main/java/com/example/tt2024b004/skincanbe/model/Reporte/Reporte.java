@@ -4,6 +4,7 @@ package com.example.tt2024b004.skincanbe.model.Reporte;
 
 import com.example.tt2024b004.skincanbe.model.Lesion.Lesion;
 // import com.example.tt2024b004.skincanbe.model.Observacion.Observacion;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 // import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -25,6 +26,7 @@ public class Reporte {
 
     @OneToOne
     @JoinColumn(name= "lesion_id")
+    @JsonIgnore
     private Lesion lesion;
 
     /*@OneToMany(mappedBy = "reporte", cascade = CascadeType.ALL)

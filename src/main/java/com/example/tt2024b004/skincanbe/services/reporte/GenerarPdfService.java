@@ -28,6 +28,7 @@ import com.itextpdf.layout.properties.TextAlignment;
 public class GenerarPdfService {
 
     public ByteArrayOutputStream generarPdfDeLesion(Lesion lesion) throws IOException {
+        System.out.println("ENTRE A DONDE SE HACE EL PDF");
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
         // Crear el PDF Writer
@@ -37,30 +38,43 @@ public class GenerarPdfService {
 
         //Se agregan variables de los estilos mas comunes en el pdf
         Text titulo = new Text("Reporte de la lesión").setBold().setFontSize(20);
+        System.out.println("1");
         Text fechaActual = new Text("Fecha"+ LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        System.out.println("2");
         LineSeparator lineadivisora = new LineSeparator(new SolidLine(1f));
+        System.out.println("3");
 
         //Aqui se llama al metodo para agregar el encabezado con el logo de Skincanbe y con la fecha actual.
         addSeccionEncabezado(document, fechaActual);
+        System.out.println("4");
         //Se agrega el titulo del reporte
         document.add(new Paragraph(titulo).setTextAlignment(TextAlignment.CENTER));
+        System.out.println("5");
         //linea divisora
         document.add(lineadivisora);
+        System.out.println("6");
 
         //Aqui se llama al metodo para agregar datos del paciente
         addSeccionDatosPaciente(document, lesion);
+        System.out.println("7");
         //linea divisora
         document.add(lineadivisora);
+        System.out.println("8");
 
         //Datos de la lesion
         addSeccionDatosLesion(document, lesion);
+        System.out.println("9");
         document.add(lineadivisora);
+        System.out.println("10");
 
         //Informacion adicional
         pdfDoc.addNewPage();
+        System.out.println("11");
         addSeccionInfoAdic(document);
+        System.out.println("12");
 
         document.add(lineadivisora);
+        System.out.println("14");
 
         
         // Cerrar el documento
@@ -71,7 +85,7 @@ public class GenerarPdfService {
     }
 
     private void addSeccionEncabezado(Document document, Text fechaActual) throws IOException {
-        Image logo = new Image(ImageDataFactory.create("src/main/resources/images/logo/logo.png")).scaleToFit(100, 100).setHorizontalAlignment(HorizontalAlignment.LEFT);
+        Image logo = new Image(ImageDataFactory.create("src/main/resources/static/logo.png")).scaleToFit(100, 100).setHorizontalAlignment(HorizontalAlignment.LEFT);
         Paragraph header = new Paragraph().add(logo).add(new Paragraph(fechaActual));
         document.add(header);
     }
