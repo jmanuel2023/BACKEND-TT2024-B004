@@ -1,9 +1,10 @@
-package com.example.tt2024b004.skincanbe.services;
+package com.example.tt2024b004.skincanbe.services.usuario;
 
-import com.example.tt2024b004.skincanbe.model.Usuario;
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
+
+import com.example.tt2024b004.skincanbe.model.usuario.Usuario;
 
 public class CustomUserDetails extends org.springframework.security.core.userdetails.User {
 

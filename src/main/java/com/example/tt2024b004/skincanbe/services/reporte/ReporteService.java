@@ -10,12 +10,12 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.tt2024b004.skincanbe.model.Usuario;
 import com.example.tt2024b004.skincanbe.model.Lesion.Lesion;
 import com.example.tt2024b004.skincanbe.model.Reporte.Reporte;
+import com.example.tt2024b004.skincanbe.model.usuario.Usuario;
 import com.example.tt2024b004.skincanbe.repository.lesion.LesionRepository;
 import com.example.tt2024b004.skincanbe.repository.reporte.ReporteRepository;
-import com.example.tt2024b004.skincanbe.services.UsuarioService;
+import com.example.tt2024b004.skincanbe.services.usuario.UsuarioService;
 
 @Service
 public class ReporteService {

@@ -1,4 +1,4 @@
-package com.example.tt2024b004.skincanbe.services;
+package com.example.tt2024b004.skincanbe.services.usuario;
 
 
 import java.util.List;
@@ -14,10 +14,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.tt2024b004.skincanbe.model.Especialista;
-import com.example.tt2024b004.skincanbe.model.Paciente;
-import com.example.tt2024b004.skincanbe.model.Usuario;
-import com.example.tt2024b004.skincanbe.repository.UsuarioRepository;
+import com.example.tt2024b004.skincanbe.model.usuario.Especialista;
+import com.example.tt2024b004.skincanbe.model.usuario.Paciente;
+import com.example.tt2024b004.skincanbe.model.usuario.Usuario;
+import com.example.tt2024b004.skincanbe.repository.usuario.UsuarioRepository;
 
 @Service
 public class JpaUserDetailsService implements UserDetailsService {

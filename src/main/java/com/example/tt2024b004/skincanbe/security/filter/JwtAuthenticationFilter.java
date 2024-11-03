@@ -11,8 +11,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.example.tt2024b004.skincanbe.model.Usuario;
-import com.example.tt2024b004.skincanbe.services.CustomUserDetails;
+import com.example.tt2024b004.skincanbe.model.usuario.Usuario;
+import com.example.tt2024b004.skincanbe.services.usuario.CustomUserDetails;
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;

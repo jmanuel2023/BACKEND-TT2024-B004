@@ -1,3 +1,14 @@
+/**
+ ********************************
+ ** Proyecto: Skincanbe        **
+ ** Integrantes:               **
+ ** Joan Hanzka Manuel Morales **
+ ** Angelo Mihaelle Ojeda Gomez**
+ ** Israel Rodrigue Juarez     **
+ ******************************** 
+ * Descripción: Clase controlador para todo lo relacionado con los reportes.
+ */
+
 package com.example.tt2024b004.skincanbe.controllers.reporte;
 
 import org.springframework.beans.factory.annotation.Autowired;

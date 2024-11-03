@@ -1,5 +1,14 @@
+/**
+ ********************************
+ ** Proyecto: Skincanbe        **
+ ** Integrantes:               **
+ ** Joan Hanzka Manuel Morales **
+ ** Angelo Mihaelle Ojeda Gomez**
+ ** Israel Rodrigue Juarez     **
+ ******************************** 
+ * Descripción: Clase controlador para todo lo relacionado con las lesiones
+ */
 package com.example.tt2024b004.skincanbe.controllers.lesion;
-
 
 import java.io.IOException; 
 

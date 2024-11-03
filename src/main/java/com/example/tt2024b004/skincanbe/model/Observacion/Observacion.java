@@ -1,3 +1,15 @@
+/**
+ ********************************
+ ** Proyecto: Skincanbe        **
+ ** Integrantes:               **
+ ** Joan Hanzka Manuel Morales **
+ ** Angelo Mihaelle Ojeda Gomez**
+ ** Israel Rodrigue Juarez     **
+ ******************************** 
+ * Descripción: Clase entidad para crear la tabla Observación y 
+ * declarar los atributos que tendra la tabla en la base de datos.
+ */
+
 package com.example.tt2024b004.skincanbe.model.Observacion;
 
 import com.example.tt2024b004.skincanbe.model.Reporte.Reporte;

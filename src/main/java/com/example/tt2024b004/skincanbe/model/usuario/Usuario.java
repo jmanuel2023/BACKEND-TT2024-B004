@@ -1,4 +1,15 @@
-package com.example.tt2024b004.skincanbe.model;
+/**
+ ********************************
+ ** Proyecto: Skincanbe        **
+ ** Integrantes:               **
+ ** Joan Hanzka Manuel Morales **
+ ** Angelo Mihaelle Ojeda Gomez**
+ ** Israel Rodrigue Juarez     **
+ ******************************** 
+ * Descripción: Clase entidad para crear la tabla Usuario y 
+ * declarar los atributos que tendra la tabla en la base de datos.
+ */
+package com.example.tt2024b004.skincanbe.model.usuario;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -11,7 +22,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 /*Esta anotacion le indica a JPA que Usuario es una clase que se debe mapear a una tabla en la base de datos*/
 @Entity 
 /*Esta anotacion especifica que se utilizara la estrategia de tabla unica (SINGLE_TABLE) para herencia 
@@ -57,62 +72,6 @@ public class Usuario {
         this.edad = edad;
         this.correo = correo;
         this.password = password;
-    }
-    /*Metodos getters y setters */
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getApellidos() {
-        return apellidos;
-    }
-
-    public void setApellidos(String apellidos) {
-        this.apellidos = apellidos;
-    }
-
-    public int getEdad() {
-        return edad;
-    }
-
-    public void setEdad(int edad) {
-        this.edad = edad;
-    }
-
-    public String getCorreo() {
-        return correo;
-    }
-
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String contraseña) {
-        this.password = contraseña;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
     
 }

@@ -1,7 +1,18 @@
+/**
+ ********************************
+ ** Proyecto: Skincanbe        **
+ ** Integrantes:               **
+ ** Joan Hanzka Manuel Morales **
+ ** Angelo Mihaelle Ojeda Gomez**
+ ** Israel Rodrigue Juarez     **
+ ******************************** 
+ * Descripción: Clase entidad para crear la tabla Lesión y 
+ * declarar los atributos que tendra la tabla en la base de datos.
+ */
 package com.example.tt2024b004.skincanbe.model.Lesion;
 
-import com.example.tt2024b004.skincanbe.model.Usuario;
 import com.example.tt2024b004.skincanbe.model.Reporte.Reporte;
+import com.example.tt2024b004.skincanbe.model.usuario.Usuario;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
@@ -35,62 +46,4 @@ public class Lesion {
 
     @OneToOne(mappedBy = "lesion", cascade = CascadeType.ALL)
     private Reporte reporte;
-
-    /*Getters and Setters
-
-    public Long getId_lesion() {
-        return id_lesion;
-    }
-
-    public void setId_lesion(Long id_lesion) {
-        this.id_lesion = id_lesion;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
-    public String getNombre_lesion() {
-        return nombre_lesion;
-    }
-
-    public void setNombre_lesion(String nombre_lesion) {
-        this.nombre_lesion = nombre_lesion;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public String getImagen() {
-        return imagen;
-    }
-
-    public void setImagen(String imagen) {
-        this.imagen = imagen;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
-    public Reporte getReporte() {
-         return reporte;
-    }
-
-    public void setReporte(Reporte reporte) {
-         this.reporte = reporte;
-    }*/
 }

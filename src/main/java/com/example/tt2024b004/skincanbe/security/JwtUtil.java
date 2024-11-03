@@ -2,7 +2,8 @@ package com.example.tt2024b004.skincanbe.security;
 
 import java.util.Date;
 
-import com.example.tt2024b004.skincanbe.model.Usuario;
+import com.example.tt2024b004.skincanbe.model.usuario.Usuario;
+
 import static com.example.tt2024b004.skincanbe.security.JwtTokenConfig.*;
 
 import io.jsonwebtoken.Claims;

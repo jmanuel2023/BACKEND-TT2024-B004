@@ -1,4 +1,15 @@
-package com.example.tt2024b004.skincanbe.model;
+/**
+ ********************************
+ ** Proyecto: Skincanbe        **
+ ** Integrantes:               **
+ ** Joan Hanzka Manuel Morales **
+ ** Angelo Mihaelle Ojeda Gomez**
+ ** Israel Rodrigue Juarez     **
+ ******************************** 
+ * Descripción: Clase entidad para crear la especialización Especialista en la tabla Usuario y 
+ * declarar los atributos que tendra la tabla en la base de datos.
+ */
+package com.example.tt2024b004.skincanbe.model.usuario;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;

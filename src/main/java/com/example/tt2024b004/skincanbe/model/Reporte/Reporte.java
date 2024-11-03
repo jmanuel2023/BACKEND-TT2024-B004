@@ -1,3 +1,14 @@
+/**
+ ********************************
+ ** Proyecto: Skincanbe        **
+ ** Integrantes:               **
+ ** Joan Hanzka Manuel Morales **
+ ** Angelo Mihaelle Ojeda Gomez**
+ ** Israel Rodrigue Juarez     **
+ ******************************** 
+ * Descripción: Clase entidad para crear la tabla Reporte y 
+ * declarar los atributos que tendra la tabla en la base de datos.
+ */
 package com.example.tt2024b004.skincanbe.model.Reporte;
 
 // import java.util.List;

@@ -1,4 +1,15 @@
-package com.example.tt2024b004.skincanbe.model;
+/**
+ ********************************
+ ** Proyecto: Skincanbe        **
+ ** Integrantes:               **
+ ** Joan Hanzka Manuel Morales **
+ ** Angelo Mihaelle Ojeda Gomez**
+ ** Israel Rodrigue Juarez     **
+ ******************************** 
+ * Descripción: Clase entidad para crear la tabla TokenVerificación y 
+ * declarar los atributos que tendra la tabla en la base de datos.
+ */
+package com.example.tt2024b004.skincanbe.model.usuario;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -9,7 +20,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 public class TokenVerificacion {
 
@@ -32,38 +47,5 @@ public class TokenVerificacion {
         this.token = UUID.randomUUID().toString();
         this.fechaExp = LocalDateTime.now().plusHours(24);
     }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public LocalDateTime getFechaExp() {
-        return fechaExp;
-    }
-
-    public void setFechaExp(LocalDateTime fechaExp) {
-        this.fechaExp = fechaExp;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
     
 }

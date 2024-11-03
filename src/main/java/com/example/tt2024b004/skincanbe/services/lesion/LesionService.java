@@ -15,10 +15,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.tt2024b004.skincanbe.model.Usuario;
 import com.example.tt2024b004.skincanbe.model.Lesion.Lesion;
-import com.example.tt2024b004.skincanbe.repository.UsuarioRepository;
+import com.example.tt2024b004.skincanbe.model.usuario.Usuario;
 import com.example.tt2024b004.skincanbe.repository.lesion.LesionRepository;
+import com.example.tt2024b004.skincanbe.repository.usuario.UsuarioRepository;
 
 @Service
 public class LesionService {
