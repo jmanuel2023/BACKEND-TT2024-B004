@@ -37,23 +37,22 @@ public class VinculacionController {
     @PostMapping("/vinculos/crear")
     public ResponseEntity<Vinculacion> crearVinculo(@RequestBody Vinculacion vinculo) {
         System.out.println("Entre al metodo crearVinculo del controlador");
-        System.out.println(vinculo.getId());
-        System.out.println(vinculo.getEspecialista().getId());
-        System.out.println(vinculo.getPaciente().getId());
-        System.out.println(vinculo.getFechaVinculacion());
-
         Optional<Usuario> paciente = userService.findById(vinculo.getPaciente().getId());
         if (paciente.isPresent()) {
             System.out.println("Paciente si existe");
             Vinculacion nuevoVinculo = vinculacionService.crearVinculo(vinculo);
-            System.out.println(nuevoVinculo.getId());
-            System.out.println(nuevoVinculo.getPaciente());
-            System.out.println(nuevoVinculo.getEspecialista());
-            System.out.println(nuevoVinculo.getFechaVinculacion());
             return new ResponseEntity<>(nuevoVinculo, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
+    }
+
+    @PutMapping("/{id}/estado")
+    public ResponseEntity<Vinculacion> actualizarEstadoVinculacion(
+            @PathVariable Long id,
+            @RequestParam EstadoVinculacion estado) {
+        Vinculacion vinculoActualizado = vinculacionService.actualizarEstadoVinculacion(id, estado);
+        return new ResponseEntity<>(vinculoActualizado, HttpStatus.OK);
     }
 }
