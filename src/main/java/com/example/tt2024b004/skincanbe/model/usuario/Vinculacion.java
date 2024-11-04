@@ -39,5 +39,8 @@ public class Vinculacion {
     private Especialista especialista;
 
     private LocalDate fechaVinculacion; // Almacena la fecha de vinculación
+    
+    @Enumerated(EnumType.STRING)
+    private EstadoVinculacion status;
 }
 
