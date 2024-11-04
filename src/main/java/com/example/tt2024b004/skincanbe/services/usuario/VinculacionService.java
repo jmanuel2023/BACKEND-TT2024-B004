@@ -27,5 +27,12 @@ public class VinculacionService {
         return vinculacionRepository.save(vinculo);
     }
 
+    public Vinculacion actualizarEstadoVinculacion(Long id, EstadoVinculacion nuevoEstado) {
+        Vinculacion vinculo = vinculacionRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Vinculación no encontrada"));
+        vinculo.setStatus(nuevoEstado);
+        return vinculacionRepository.save(vinculo);
+    }
+
 
 }
