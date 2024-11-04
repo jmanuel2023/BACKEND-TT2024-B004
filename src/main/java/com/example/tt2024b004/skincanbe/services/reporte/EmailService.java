@@ -1,3 +1,13 @@
+/**
+ ********************************
+ ** Proyecto: Skincanbe        **
+ ** Integrantes:               **
+ ** Joan Hanzka Manuel Morales **
+ ** Angelo Mihaelle Ojeda Gomez**
+ ** Israel Rodriguez Juarez     **
+ ******************************** 
+ * Descripción: Clase servicio para implementar el envio de correos electronicos.
+ */
 package com.example.tt2024b004.skincanbe.services.reporte;
 
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,14 @@
+/**
+ ********************************
+ ** Proyecto: Skincanbe        **
+ ** Integrantes:               **
+ ** Joan Hanzka Manuel Morales **
+ ** Angelo Mihaelle Ojeda Gomez**
+ ** Israel Rodriguez Juarez     **
+ ******************************** 
+ * Descripción: Clase servicio para implementar toda la lógica de negocios de las tareas que realiza la tabla Lesión
+ */
 package com.example.tt2024b004.skincanbe.services.lesion;
-
-
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

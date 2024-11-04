@@ -11,9 +11,18 @@
  */
 package com.example.tt2024b004.skincanbe.model.usuario;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import lombok.Getter;
+import lombok.Setter;
 
+
+@Getter
+@Setter
 /*Esta anotacion marca a esta clase como una entidad que se mapeara a la misma tabla que Usuario*/
 @Entity
 /*Esta anotacion sirve para que el valor "Especialista" se guarde en la columna tipo_usuario cuando un registro corresponda a un Especialista*/
@@ -23,14 +32,8 @@ public class Especialista extends Usuario{
     /*Este atribut se mapeara como una columna adicional en la tabla compartida, y su valor sera NULL para los pacientes*/
     private String cedula;
 
-    /*Metodos getters y setters*/
-    public String getCedula() {
-        return cedula;
-    }
-
-    public void setCedula(String cedula) {
-        this.cedula = cedula;
-    }
+    @OneToMany(mappedBy = "especialista", cascade = CascadeType.ALL)
+    private List<Vinculacion> vinculos;
     
 }
 

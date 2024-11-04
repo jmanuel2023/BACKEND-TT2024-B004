@@ -1,3 +1,13 @@
+/**
+ ********************************
+ ** Proyecto: Skincanbe        **
+ ** Integrantes:               **
+ ** Joan Hanzka Manuel Morales **
+ ** Angelo Mihaelle Ojeda Gomez**
+ ** Israel Rodrigue Juarez     **
+ ******************************** 
+ * Descripción: Clase de seguridad para la decodificación del token para el restablecimiento de la contraseña.
+ */
 package com.example.tt2024b004.skincanbe.security;
 
 import java.util.Date;

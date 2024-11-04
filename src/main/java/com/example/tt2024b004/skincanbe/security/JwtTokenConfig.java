@@ -1,3 +1,13 @@
+/**
+ ********************************
+ ** Proyecto: Skincanbe        **
+ ** Integrantes:               **
+ ** Joan Hanzka Manuel Morales **
+ ** Angelo Mihaelle Ojeda Gomez**
+ ** Israel Rodrigue Juarez     **
+ ******************************** 
+ * Descripción: Clase de seguridad para la configuración de constantes usadas en las clases de seguridad.
+ */
 package com.example.tt2024b004.skincanbe.security;
 
 import javax.crypto.SecretKey;

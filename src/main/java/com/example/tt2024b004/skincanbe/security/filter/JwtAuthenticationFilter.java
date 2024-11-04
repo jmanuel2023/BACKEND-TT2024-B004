@@ -1,3 +1,14 @@
+/**
+ ********************************
+ ** Proyecto: Skincanbe        **
+ ** Integrantes:               **
+ ** Joan Hanzka Manuel Morales **
+ ** Angelo Mihaelle Ojeda Gomez**
+ ** Israel Rodrigue Juarez     **
+ ******************************** 
+ * Descripción: Clase de seguridad para la autenticación del token al iniciar sesión
+ */
+
 package com.example.tt2024b004.skincanbe.security.filter;
 
 import java.io.IOException;

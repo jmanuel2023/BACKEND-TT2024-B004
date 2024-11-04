@@ -1,3 +1,13 @@
+/**
+ ********************************
+ ** Proyecto: Skincanbe        **
+ ** Integrantes:               **
+ ** Joan Hanzka Manuel Morales **
+ ** Angelo Mihaelle Ojeda Gomez**
+ ** Israel Rodriguez Juarez     **
+ ******************************** 
+ * Descripción: Clase servicio para implementar toda la lógica de negocios de las tareas que realiza la tabla Usuario.
+ */
 package com.example.tt2024b004.skincanbe.services.usuario;
 
 import java.util.List;

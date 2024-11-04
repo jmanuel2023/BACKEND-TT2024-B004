@@ -1,3 +1,13 @@
+/**
+ ********************************
+ ** Proyecto: Skincanbe        **
+ ** Integrantes:               **
+ ** Joan Hanzka Manuel Morales **
+ ** Angelo Mihaelle Ojeda Gomez**
+ ** Israel Rodrigue Juarez     **
+ ******************************** 
+ * Descripción: Clase de seguridad principal para la configuración de Spring Security y funcionamiento correcto de JWT.
+ */
 package com.example.tt2024b004.skincanbe.security;
 
 import org.springframework.beans.factory.annotation.Autowired;

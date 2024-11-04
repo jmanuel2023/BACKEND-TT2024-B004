@@ -1,3 +1,13 @@
+/**
+ ********************************
+ ** Proyecto: Skincanbe        **
+ ** Integrantes:               **
+ ** Joan Hanzka Manuel Morales **
+ ** Angelo Mihaelle Ojeda Gomez**
+ ** Israel Rodriguez Juarez     **
+ ******************************** 
+ * Descripción: Clase de servicio para el control del endpoint /login. 
+ */
 package com.example.tt2024b004.skincanbe.services.usuario;
 
 
@@ -36,7 +46,6 @@ public class JpaUserDetailsService implements UserDetailsService {
         }
 
         Usuario user = userOptional.orElseThrow();
-        // Determinar el tipo de usuario usando 'instanceof'
         String tipoUsuario;
         if (user instanceof Paciente) {
             tipoUsuario = "Paciente";

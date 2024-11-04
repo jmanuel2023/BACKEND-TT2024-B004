@@ -1,3 +1,13 @@
+/**
+ ********************************
+ ** Proyecto: Skincanbe        **
+ ** Integrantes:               **
+ ** Joan Hanzka Manuel Morales **
+ ** Angelo Mihaelle Ojeda Gomez**
+ ** Israel Rodrigue Juarez     **
+ ******************************** 
+ * Descripción: Clase repositorio para que se puedan hacer sentencias sql en la tabla Lesión
+ */
 package com.example.tt2024b004.skincanbe.repository.lesion;
 
 import java.util.List;

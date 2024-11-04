@@ -1,3 +1,13 @@
+/**
+ ********************************
+ ** Proyecto: Skincanbe        **
+ ** Integrantes:               **
+ ** Joan Hanzka Manuel Morales **
+ ** Angelo Mihaelle Ojeda Gomez**
+ ** Israel Rodriguez Juarez     **
+ ******************************** 
+ * Descripción: Clase de ayuda al servicio de Usuario para el manejo de atributos y libreria security.core.userdetails.
+ */
 package com.example.tt2024b004.skincanbe.services.usuario;
 
 import java.util.List;

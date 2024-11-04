@@ -1,3 +1,13 @@
+/**
+ ********************************
+ ** Proyecto: Skincanbe        **
+ ** Integrantes:               **
+ ** Joan Hanzka Manuel Morales **
+ ** Angelo Mihaelle Ojeda Gomez**
+ ** Israel Rodriguez Juarez     **
+ ******************************** 
+ * Descripción: Clase servicio para la generación del reporte de la lesión en formato PDF. 
+ */
 package com.example.tt2024b004.skincanbe.services.reporte;
 
 import java.io.ByteArrayOutputStream;
