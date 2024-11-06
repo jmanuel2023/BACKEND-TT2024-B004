@@ -10,16 +10,22 @@
  */
 package com.example.tt2024b004.skincanbe.controllers.usuario;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.tt2024b004.skincanbe.enums.EstadoVinculacion;
 import com.example.tt2024b004.skincanbe.model.usuario.Usuario;
 import com.example.tt2024b004.skincanbe.model.usuario.Vinculacion;
 import com.example.tt2024b004.skincanbe.services.usuario.UsuarioService;
@@ -37,6 +43,7 @@ public class VinculacionController {
     @PostMapping("/vinculos/crear")
     public ResponseEntity<Vinculacion> crearVinculo(@RequestBody Vinculacion vinculo) {
         System.out.println("Entre al metodo crearVinculo del controlador");
+        System.out.println(vinculo.getPaciente().getId());
         Optional<Usuario> paciente = userService.findById(vinculo.getPaciente().getId());
         if (paciente.isPresent()) {
             System.out.println("Paciente si existe");
@@ -54,5 +61,13 @@ public class VinculacionController {
             @RequestParam EstadoVinculacion estado) {
         Vinculacion vinculoActualizado = vinculacionService.actualizarEstadoVinculacion(id, estado);
         return new ResponseEntity<>(vinculoActualizado, HttpStatus.OK);
+    }
+
+    @GetMapping("/solicitudes/{especialistaId}")
+    public ResponseEntity<List<Usuario>> obtenerSolicitudesPendientes(@PathVariable Long especialistaId) {
+        System.out.println(especialistaId);
+        List<Usuario> solicitudesPendientes = vinculacionService.obtenerSolicitudesPendientes(especialistaId);
+        System.out.println(solicitudesPendientes);
+        return new ResponseEntity<>(solicitudesPendientes, HttpStatus.OK);
     }
 }

@@ -10,9 +10,14 @@
  */
 package com.example.tt2024b004.skincanbe.services.usuario;
 
+import java.util.List;
+import java.util.NoSuchElementException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.tt2024b004.skincanbe.enums.EstadoVinculacion;
+import com.example.tt2024b004.skincanbe.model.usuario.Usuario;
 import com.example.tt2024b004.skincanbe.model.usuario.Vinculacion;
 import com.example.tt2024b004.skincanbe.repository.usuario.VinculacionRepository;
 
@@ -24,14 +29,21 @@ public class VinculacionService {
 
     public Vinculacion crearVinculo(Vinculacion vinculo){
         System.out.println("Entre al metodo crearVinculo del servicio");
+        vinculo.setStatus(EstadoVinculacion.PENDIENTE);
         return vinculacionRepository.save(vinculo);
     }
 
     public Vinculacion actualizarEstadoVinculacion(Long id, EstadoVinculacion nuevoEstado) {
         Vinculacion vinculo = vinculacionRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Vinculación no encontrada"));
+            .orElseThrow(() -> new NoSuchElementException("Vinculación no encontrada"));
         vinculo.setStatus(nuevoEstado);
         return vinculacionRepository.save(vinculo);
+    }
+
+    public List<Usuario> obtenerSolicitudesPendientes(Long especialistaId) {
+        System.out.println(especialistaId);
+        System.out.println(EstadoVinculacion.PENDIENTE);
+        return vinculacionRepository.findByEspecialistaIdAndStatus(especialistaId, EstadoVinculacion.PENDIENTE);
     }
 
 

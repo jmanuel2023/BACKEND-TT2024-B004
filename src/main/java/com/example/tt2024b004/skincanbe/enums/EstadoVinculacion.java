@@ -1,4 +1,4 @@
-package com.example.tt2024b004.skincanbe.enum;
+package com.example.tt2024b004.skincanbe.enums;
 
 public enum EstadoVinculacion {
     PENDIENTE,

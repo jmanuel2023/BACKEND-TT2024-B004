@@ -56,11 +56,14 @@ public class UsuarioService {
 
     }
 
+
     @Transactional(readOnly = true)
     public List<Usuario> obtenerEspecialistasPorNomYCed(String filtro) {
         System.out.println(filtro);
         return usuarioRepository.findSpecialistByNombreYCedula(filtro);
     }
+
+    
 
     public Usuario resetNewPassword(String correo, String newPassword) {
         System.out.println("Entre al metodo resetNewPassword del servicio de usuario");
