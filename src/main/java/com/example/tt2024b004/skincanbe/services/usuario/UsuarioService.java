@@ -51,14 +51,14 @@ public class UsuarioService {
     }
 
     @Transactional(readOnly = true)
-    public List<Usuario> obtenerTodosLosEspecialistas() {
+    public List<Especialista> obtenerTodosLosEspecialistas() {
         return usuarioRepository.findSpecialist();
 
     }
 
 
     @Transactional(readOnly = true)
-    public List<Usuario> obtenerEspecialistasPorNomYCed(String filtro) {
+    public List<Especialista> obtenerEspecialistasPorNomYCed(String filtro) {
         System.out.println(filtro);
         return usuarioRepository.findSpecialistByNombreYCedula(filtro);
     }

@@ -20,12 +20,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
+@Builder
 public class TokenVerificacion {
 
     @Id
@@ -47,5 +49,13 @@ public class TokenVerificacion {
         this.token = UUID.randomUUID().toString();
         this.fechaExp = LocalDateTime.now().plusHours(24);
     }
+
+    public TokenVerificacion(Long id, String token, LocalDateTime fechaExp, Usuario usuario) {
+        this.id = id;
+        this.token = token;
+        this.fechaExp = fechaExp;
+        this.usuario = usuario;
+    }
+    
     
 }

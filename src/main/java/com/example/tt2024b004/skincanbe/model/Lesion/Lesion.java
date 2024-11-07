@@ -46,4 +46,8 @@ public class Lesion {
 
     @OneToOne(mappedBy = "lesion", cascade = CascadeType.ALL)
     private Reporte reporte;
+
+    
+
+    
 }

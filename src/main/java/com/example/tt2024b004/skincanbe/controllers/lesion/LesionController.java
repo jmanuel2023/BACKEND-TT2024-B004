@@ -10,7 +10,7 @@
  */
 package com.example.tt2024b004.skincanbe.controllers.lesion;
 
-import java.io.IOException; 
+import java.io.IOException;
 
 import java.util.List;
 
@@ -36,12 +36,12 @@ public class LesionController {
     private LesionService lesionService;
 
     @PostMapping("/register-injury")
-    public ResponseEntity<Lesion> registrarLesion (
-        @RequestParam("id_usuario") Long usuarioId,
-        @RequestParam("nombre_lesion") String nombreLesion,
-        @RequestParam("descripcion") String descripcion,
-        @RequestParam("imagen") MultipartFile imagen) throws IOException {
-            System.out.println("Ya estoy en el controlador de la lesion");
+    public ResponseEntity<Lesion> registrarLesion(
+            @RequestParam("id_usuario") Long usuarioId,
+            @RequestParam("nombre_lesion") String nombreLesion,
+            @RequestParam("descripcion") String descripcion,
+            @RequestParam("imagen") MultipartFile imagen) throws IOException {
+        System.out.println("Ya estoy en el controlador de la lesion");
         try {
             Lesion lesion = lesionService.guardarLesion(usuarioId, nombreLesion, descripcion, imagen);
             return ResponseEntity.status(HttpStatus.CREATED).body(lesion);
@@ -49,7 +49,6 @@ public class LesionController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
 
     @GetMapping("/{usuarioId}")
     public ResponseEntity<List<Lesion>> obtenerLesionesPorUsuarioId(@PathVariable Long usuarioId) {

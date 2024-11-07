@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.tt2024b004.skincanbe.model.usuario.Especialista;
 import com.example.tt2024b004.skincanbe.model.usuario.Usuario;
 import com.example.tt2024b004.skincanbe.security.JwtUtil;
 import com.example.tt2024b004.skincanbe.services.usuario.TokenVerificacionService;
@@ -43,14 +44,14 @@ public class UsuarioController {
     private TokenVerificacionService tokenVerificacionService;
 
     @GetMapping("/specialistFilter")
-    public ResponseEntity<List<Usuario>> obtenerTodosLosEspecialistas() {
-        List<Usuario> especialistas = usuarioService.obtenerTodosLosEspecialistas();
+    public ResponseEntity<List<Especialista>> obtenerTodosLosEspecialistas() {
+        List<Especialista> especialistas = usuarioService.obtenerTodosLosEspecialistas();
         return ResponseEntity.ok(especialistas);
     }
     
     @GetMapping("/specialistFilter/{filtro}")
-    public ResponseEntity<List<Usuario>> obtenerEspecialistasPorNombreYCedula(@PathVariable String filtro) {
-        List<Usuario> filtroEspecialista = null;
+    public ResponseEntity<List<Especialista>> obtenerEspecialistasPorNombreYCedula(@PathVariable String filtro) {
+        List<Especialista> filtroEspecialista = null;
         System.out.println(filtro);
         if (filtro.equals("nada")) {
             // Lógica para obtener todos los especialistas si el filtro está vacío

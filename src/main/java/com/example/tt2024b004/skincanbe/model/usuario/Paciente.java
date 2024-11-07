@@ -22,6 +22,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+
 /*
  * Esta anotacion marca a Paciente como una entidad, aunque no sea crea una
  * tabla separada, sino que se usa la misma tabla que Usuario

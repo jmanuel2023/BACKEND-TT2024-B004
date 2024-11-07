@@ -22,6 +22,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,11 +38,13 @@ si el registro es de tipo "Paciente* o "Especialista"*/
 /*De igual manera, esta columna sera utilizada por el ORM para determinar que clase hija (Paciente o Especialista) 
 corresponde a un registro especifico */
 @DiscriminatorColumn(name = "tipo_usuario", discriminatorType = DiscriminatorType.STRING)
+@Builder
 public class Usuario {
+    
     @Id /*Clave primaria que se genera automaticamente por la base de datos*/
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    
     /*Atributos comunes para cualquier usuario ya sea Paciente o Especialista*/
     @Column(nullable = false, length = 100)
     private String nombre;
@@ -55,23 +58,22 @@ public class Usuario {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private String status;
-
+    
     
     /*Constructores */
     public Usuario() {
         this.status= "Pendiente";
     }
-
     
-
-
-    public Usuario(Long id, String nombre, String apellidos, int edad, String correo, String password) {
+    
+    public Usuario(Long id, String nombre, String apellidos, int edad, String correo, String password, String status) {
         this.id = id;
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.edad = edad;
         this.correo = correo;
         this.password = password;
+        this.status = status;
     }
     
 }
