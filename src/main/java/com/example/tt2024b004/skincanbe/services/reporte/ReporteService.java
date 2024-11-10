@@ -89,7 +89,7 @@ public class ReporteService {
         }
     }
 
-    private String generarPDFReporte(Reporte reporte) throws IOException {
+    public String generarPDFReporte(Reporte reporte) throws IOException {
         System.out.println("Inicio del metodo generarPDFReporte");
         Lesion lesion = reporte.getLesion();
         if (lesion == null) {
@@ -108,7 +108,7 @@ public class ReporteService {
         }
     }
 
-    private void enviarCorreoReporte(Reporte reporte, String archivo) throws Exception {
+    public void enviarCorreoReporte(Reporte reporte, String archivo) throws Exception {
         // Configurar y enviar el correo electrónico con el PDF adjunto
         System.out.println("Inicio del metodo enviarCorreoReporte");
         String destinatario = reporte.getLesion().getUsuario().getCorreo();

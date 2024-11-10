@@ -44,6 +44,7 @@ public class LesionController {
         System.out.println("Ya estoy en el controlador de la lesion");
         try {
             Lesion lesion = lesionService.guardarLesion(usuarioId, nombreLesion, descripcion, imagen);
+            System.out.println("despues de la llamada del servicio");
             return ResponseEntity.status(HttpStatus.CREATED).body(lesion);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

@@ -43,6 +43,7 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
             throws IOException, ServletException {
 
         String header = request.getHeader(HEADER_AUTHORIZATION);
+        System.out.println(header);
 
         if (header == null || !header.startsWith(PREFIX_TOKEN)) {
             chain.doFilter(request, response);
@@ -50,9 +51,13 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
         }
         String token = header.replace(PREFIX_TOKEN, "");
 
+        System.out.println(token);
+
         try {
             Claims claims = Jwts.parser().verifyWith(SECRET_KEY).build().parseSignedClaims(token).getPayload();
+            System.out.println(claims);
             String usename = claims.getSubject();
+            System.out.println(usename);
 
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(usename, null, null);
             SecurityContextHolder .getContext().setAuthentication(authenticationToken);

@@ -30,7 +30,7 @@ public class JwtUtil {
             return email;
         } catch (Exception e) {
             // Otros errores posibles durante la decodificación del token
-            throw new RuntimeException("Error al procesar el token");
+            throw new RuntimeException("Error al procesar el token", e);
         }
     }
 

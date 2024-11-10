@@ -37,6 +37,8 @@ public class ReporteRepositoryTest {
     @Autowired
     ReporteRepository reporteRepository;
 
+    private Lesion lesionprueba;
+
     @BeforeEach
     void setUp(){
         Usuario usuario = Paciente.builder()
@@ -49,7 +51,7 @@ public class ReporteRepositoryTest {
                 .build();
         testEntityManager.persist(usuario);
 
-        Lesion lesionprueba = new Lesion();
+        lesionprueba = new Lesion();
         lesionprueba.setTipo("Maligna");
         lesionprueba.setNombre_lesion("Carcinoma Basocelular");
         lesionprueba.setDescripcion("Lesión de carcinoma basocelular");
@@ -67,13 +69,13 @@ public class ReporteRepositoryTest {
 
     @Test
     void testFindByLesion() {
-        Lesion lesionMuestra = new Lesion();
-        lesionMuestra.setId_lesion(1L);
-        lesionMuestra.setTipo("Maligna");
-        lesionMuestra.setNombre_lesion("Carcinoma Basocelular");
-        lesionMuestra.setDescripcion("Lesión de carcinoma basocelular");
-        Optional<Reporte> registroReporte = reporteRepository.findByLesion(lesionMuestra);
-        assertEquals(1L, registroReporte.get().getId_reporte()); 
+        // Lesion lesionMuestra = new Lesion();
+        // lesionMuestra.setId_lesion(1L);
+        // lesionMuestra.setTipo("Maligna");
+        // lesionMuestra.setNombre_lesion("Carcinoma Basocelular");
+        // lesionMuestra.setDescripcion("Lesión de carcinoma basocelular");
+        Optional<Reporte> registroReporte = reporteRepository.findByLesion(lesionprueba);
+        assertEquals("Reporte de la lesion tal", registroReporte.get().getDescripcion()); 
 
     }
 }

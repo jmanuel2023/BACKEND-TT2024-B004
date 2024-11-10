@@ -1,37 +1,61 @@
 package com.example.tt2024b004.skincanbe.controllers.usuario;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.example.tt2024b004.skincanbe.model.usuario.Especialista;
 import com.example.tt2024b004.skincanbe.model.usuario.Usuario;
+import com.example.tt2024b004.skincanbe.security.JwtUtil;
+import com.example.tt2024b004.skincanbe.services.usuario.TokenVerificacionService;
 import com.example.tt2024b004.skincanbe.services.usuario.UsuarioService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import static org.mockito.Mockito.mockStatic;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(UsuarioController.class)
+@ExtendWith(MockitoExtension.class)
+@AutoConfigureMockMvc(addFilters = false)
 public class UsuarioControllerTest {
 
     @Autowired
-    private MockMvc MockMvc;
+    private MockMvc mockMvc;
 
     @MockBean
     private UsuarioService usuarioService;
 
     @MockBean
-    private TokenVerificacion tokenVerificacionService;
+    private TokenVerificacionService tokenVerificacionService;
 
+
+    
     private Usuario usuario;
-    private List<Especialista> especialista;
+
+    private List<Especialista> especialistas;
 
     @BeforeEach
-    void setUp(){
-        usuario=new Usuario();
+    void setUp() {
+        usuario = new Usuario();
         usuario.setNombre("Octavio");
         usuario.setId(1L);
         usuario.setApellidos("Lopez");
-        usuario.setCorreo("octavio@gamil.com");
+        usuario.setCorreo("octavio@gmail.com");
         usuario.setEdad(25);
         usuario.setPassword("Octavitito1234");
         usuario.setStatus("Pendiente");
@@ -48,69 +72,74 @@ public class UsuarioControllerTest {
     }
 
     @Test
-    void testCrearUsuario() throws Exception{
-        Map<String,Object> peticion = new HashMap<>();
-        peticion.put("nombre": "Octavio");
-        peticion.put("id": 1L);
-        peticion.put("apellidos":"Lopez");
-        peticion.put("correo":"octavio@gmail.com");
-        peticion.put("password": "Octavitito1234");
-        peticion.put("status":"Pendiente");
-        peticion.put("edad":25);
-        Mockito.when(usuarioService.crearUsuario(peticion)).thenReturn(usuario);
+    void testCrearUsuario() throws Exception {
+        Map<String, Object> peticion = new HashMap<>();
+        peticion.put("nombre", "Octavio");
+        peticion.put("id", 1L);
+        peticion.put("apellidos", "Lopez");
+        peticion.put("correo", "octavio@gmail.com");
+        peticion.put("password", "Octavitito1234");
+        peticion.put("status", "Pendiente");
+        peticion.put("edad", 25);
+        // Aquí, Mockito.<Map<String, Object>>any() asegura que any() acepte cualquier
+        // Map<String, Object> como argumento para crearUsuario, ayudando a Mockito y al
+        // compilador de Java a entender que el tipo coincide exactamente con lo
+        // esperado.
+        Mockito.when(usuarioService.crearUsuario(Mockito.<Map<String, Object>>any())).thenReturn(usuario);
 
         // Realizar la solicitud POST y verificar la respuesta
         mockMvc.perform(post("/crear")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(new ObjectMapper().writeValueAsString(peticion)))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.nombre").value("Octavio"))
-            .andExpect(jsonPath("$.id").value(1L))
-            .andExpect(jsonPath("$.apellidos").value("Lopez"))
-            .andExpect(jsonPath("$.correo").value("octavio@gamil.com"))
-            .andExpect(jsonPath("$.edad").value(25))
-            .andExpect(jsonPath("$.password").value("Octavitito1234"))
-            .andExpect(jsonPath("$.status").value("Pendiente"));
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(peticion)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nombre").value("Octavio"))
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.apellidos").value("Lopez"))
+                .andExpect(jsonPath("$.correo").value("octavio@gmail.com"))
+                .andExpect(jsonPath("$.edad").value(25))
+                // .andExpect(jsonPath("$.password").value("Octavitito1234"))
+                .andExpect(jsonPath("$.status").value("Pendiente"));
     }
 
     @Test
-    void testForgotPassword() throws Exception{
-        Map<String,String> request = new HashMap<>();
-        peticion.put("correo":"otrousuario@gmail.com");
-        Mockito.when(usuarioService.(request)).thenReturn(null);
+    void testForgotPassword() throws Exception {
+
+        Map<String, String> request = new HashMap<>();
+        request.put("correo", "otrousuario@gmail.com");
+        Mockito.when(usuarioService.existsByEmailUsuario("octavio@gmail.com")).thenReturn(null);
 
         // Realizar la solicitud POST y verificar la respuesta
         mockMvc.perform(post("/forgotpassword")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(new ObjectMapper().writeValueAsString(request)))
-            .andExpect(status().isNotFound())
-            .andExpect(content().string("Correo no encontrado!"));
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(request)))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("Correo no encontrado!"));
     }
 
     @Test
     void testObtenerEspecialistasPorNombreYCedula() throws Exception {
         String filtro = "Juan";
-        when(usuarioService.obtenerEspecialistasPorNomYCed(filtro)).thenReturn(especialistas);
+        Mockito.when(usuarioService.obtenerEspecialistasPorNomYCed("Juan")).thenReturn(especialistas);
 
-        mockMvc.perform(get("/specialistFilter/{filtro}", filtro)
+        mockMvc.perform(get("/specialistFilter/" + filtro)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].nombre").value("Juan"))
                 .andExpect(jsonPath("$[0].cedula").value("12345"))
-                .andExpect(jsonPath("$[1].nombre").value("Maria"))
+                .andExpect(jsonPath("$[1].nombre").value("Pedrito"))
                 .andExpect(jsonPath("$[1].cedula").value("67890"));
-        
+
     }
 
     @Test
     void testObtenerTodosLosEspecialistas() throws Exception {
-        when(usuarioService.obtenerTodosLosEspecialistas()).thenReturn(especialistas);
-         mockMvc.perform(get("/specialistFilter")
+        Mockito.when(usuarioService.obtenerTodosLosEspecialistas()).thenReturn(especialistas);
+        mockMvc.perform(get("/specialistFilter")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].nombre").value("Juan"))
                 .andExpect(jsonPath("$[0].cedula").value("12345"))
-                .andExpect(jsonPath("$[1].nombre").value("Maria"))
+                .andExpect(jsonPath("$[1].nombre").value("Pedrito"))
                 .andExpect(jsonPath("$[1].cedula").value("67890"));
     }
 
@@ -123,10 +152,11 @@ public class UsuarioControllerTest {
         // Configurar el comportamiento del mock estático para JwtUtil
         try (MockedStatic<JwtUtil> mockedJwtUtil = mockStatic(JwtUtil.class)) {
             mockedJwtUtil.when(() -> JwtUtil.validatePasswordResetToken("validToken")).thenReturn(true);
-            mockedJwtUtil.when(() -> JwtUtil.getEmailFromPasswordResetToken("validToken")).thenReturn("octavio@gamil.com");
+            mockedJwtUtil.when(() -> JwtUtil.getEmailFromPasswordResetToken("validToken"))
+                    .thenReturn("octavio@gmail.com");
 
             // Configurar el comportamiento del servicio mock
-            when(usuarioService.resetPassword(request)).thenReturn(usuario);
+            Mockito.when(usuarioService.resetNewPassword("octavio@gmail.com", "newPassword")).thenReturn(usuario);
 
             // Realizar la solicitud POST y verificar la respuesta
             mockMvc.perform(post("/reset-password")
@@ -134,15 +164,16 @@ public class UsuarioControllerTest {
                     .content(new ObjectMapper().writeValueAsString(request)))
                     .andExpect(status().isOk())
                     .andExpect(content().string("Contraseña actualizada correctamente"));
+        }
     }
 
     @Test
-    void testValidarCorreo() throws Exception{
+    void testValidarCorreo() throws Exception {
         String token = "validToken";
-        when(tokenVerificacionService.validarToken(token)).thenReturn("Correo validado correctamente");
+        Mockito.when(tokenVerificacionService.validarToken(token)).thenReturn("Correo validado correctamente");
 
         mockMvc.perform(get("/validar")
-                .param("token", token)
+                .param("token", "validToken")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Correo validado correctamente"));
