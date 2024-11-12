@@ -14,7 +14,7 @@ package com.example.tt2024b004.skincanbe.model.usuario;
 import java.time.LocalDate;
 
 import com.example.tt2024b004.skincanbe.enums.EstadoVinculacion;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -37,12 +37,12 @@ public class Vinculacion {
 
     @ManyToOne
     @JoinColumn(name = "paciente_id")
-    @JsonIgnore
+    @JsonManagedReference
     private Paciente paciente;
 
     @ManyToOne
     @JoinColumn(name = "especialista_id")
-    @JsonIgnore
+    @JsonManagedReference
     private Especialista especialista;
 
     private LocalDate fechaVinculacion; // Almacena la fecha de vinculación

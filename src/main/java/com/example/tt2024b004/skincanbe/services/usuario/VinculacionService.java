@@ -12,6 +12,7 @@ package com.example.tt2024b004.skincanbe.services.usuario;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,11 +41,13 @@ public class VinculacionService {
         return vinculacionRepository.save(vinculo);
     }
 
-    public List<Usuario> obtenerSolicitudesPendientes(Long especialistaId) {
-        System.out.println(especialistaId);
-        System.out.println(EstadoVinculacion.PENDIENTE);
-        return vinculacionRepository.findByEspecialistaIdAndStatus(especialistaId, EstadoVinculacion.PENDIENTE);
-    }
+   public List<Usuario> obtenerSolicitudesPendientes(Long especialistaId) {
+    List<Vinculacion> vinculaciones = vinculacionRepository.findByEspecialistaIdAndStatus(especialistaId, EstadoVinculacion.PENDIENTE);
+    return vinculaciones.stream()
+                        .map(Vinculacion::getPaciente)  // Suponiendo que `getPaciente()` devuelve el objeto `Usuario` relacionado
+                        .collect(Collectors.toList());
+}
+
 
 
 }

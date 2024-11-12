@@ -13,6 +13,8 @@ package com.example.tt2024b004.skincanbe.model.usuario;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
@@ -43,5 +45,6 @@ public class Paciente extends Usuario {
      * especialista a nivel logivo
      */
     @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
+    @JsonBackReference
     private List<Vinculacion> vinculos;
 }

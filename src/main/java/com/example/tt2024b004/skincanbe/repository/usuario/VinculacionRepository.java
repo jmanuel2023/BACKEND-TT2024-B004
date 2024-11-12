@@ -13,17 +13,16 @@ package com.example.tt2024b004.skincanbe.repository.usuario;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.example.tt2024b004.skincanbe.enums.EstadoVinculacion;
-import com.example.tt2024b004.skincanbe.model.usuario.Usuario;
 import com.example.tt2024b004.skincanbe.model.usuario.Vinculacion;
 
 @Repository
 public interface VinculacionRepository extends JpaRepository<Vinculacion, Long> {
 
-    @Query(value = "SELECT u.* FROM usuario u JOIN vinculacion v ON u.id = v.paciente_id WHERE v.especialista_id = ?1 AND v.status = ?2", nativeQuery = true)
-    List<Usuario> findByEspecialistaIdAndStatus(Long especialistaId, EstadoVinculacion status);
+    // @Query(value = "SELECT u.* FROM usuario u JOIN vinculacion v ON u.id = v.paciente_id WHERE v.especialista_id = ?1 AND v.status = ?2", nativeQuery = true)
+    List<Vinculacion> findByEspecialistaIdAndStatus(Long especialistaId, EstadoVinculacion status);
+
 
 }
