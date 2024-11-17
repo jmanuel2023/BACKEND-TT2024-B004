@@ -14,10 +14,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import com.example.tt2024b004.skincanbe.model.Lesion.Lesion;
+import com.example.tt2024b004.skincanbe.model.Observacion.Observacion;
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.geom.PageSize;
@@ -37,7 +39,7 @@ import com.itextpdf.layout.properties.TextAlignment;
 @Service
 public class GenerarPdfService {
 
-    public ByteArrayOutputStream generarPdfDeLesion(Lesion lesion) throws IOException {
+    public ByteArrayOutputStream generarPdfDeLesion(Lesion lesion, List<Observacion> listaObservaciones) throws IOException {
         System.out.println("ENTRE A DONDE SE HACE EL PDF");
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
@@ -56,37 +58,34 @@ public class GenerarPdfService {
 
         //Aqui se llama al metodo para agregar el encabezado con el logo de Skincanbe y con la fecha actual.
         addSeccionEncabezado(document, fechaActual);
-        System.out.println("4");
+        
         //Se agrega el titulo del reporte
         document.add(new Paragraph(titulo).setTextAlignment(TextAlignment.CENTER));
-        System.out.println("5");
+        
         //linea divisora
         document.add(lineadivisora);
-        System.out.println("6");
+        
 
         //Aqui se llama al metodo para agregar datos del paciente
         addSeccionDatosPaciente(document, lesion);
-        System.out.println("7");
+        
         //linea divisora
         document.add(lineadivisora);
-        System.out.println("8");
 
         //Datos de la lesion
         addSeccionDatosLesion(document, lesion);
-        System.out.println("9");
         document.add(lineadivisora);
-        System.out.println("10");
+
+        addSeccionObservaciones(document, listaObservaciones);
+        document.add(lineadivisora);
 
         //Informacion adicional
         pdfDoc.addNewPage();
-        System.out.println("11");
+        
         addSeccionInfoAdic(document);
-        System.out.println("12");
+        
 
         document.add(lineadivisora);
-        System.out.println("14");
-
-        
         // Cerrar el documento
         document.close();
 
@@ -119,6 +118,22 @@ public class GenerarPdfService {
             document.add(image);
         }
     
+    }
+
+    private void addSeccionObservaciones(Document document, List<Observacion> observaciones){
+        document.add(new Paragraph("Historial de Observaciones").setBold().setFontSize(14));
+
+        if (observaciones.isEmpty()) {
+            document.add(new Paragraph("No hay observaciones registradas para esta lesión"));
+        }else{
+            for (Observacion observacion : observaciones) {
+                //Se agrega detalles de cada observacion
+                document.add(new Paragraph("Observación:" + observacion.getDescripcion()));
+                document.add(new Paragraph("Fecha: "+ observacion.getFecha()));
+                document.add(new Paragraph("Realizada por:" + observacion.getUsuario().getNombre()+" "+ observacion.getUsuario().getApellidos()));
+                document.add(new Paragraph(""));
+            }
+        }
     }
     private void addSeccionInfoAdic(Document document){
         document.add(new Paragraph("Información Adicional").setBold().setFontSize(14));

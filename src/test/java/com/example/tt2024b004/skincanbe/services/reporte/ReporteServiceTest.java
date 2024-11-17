@@ -97,7 +97,7 @@ public class ReporteServiceTest {
         when(lesionRepository.findById(lesionId)).thenReturn(Optional.of(lesion));
         when(reporteRepository.findByLesion(lesion)).thenReturn(Optional.empty());
         when(usuarioService.findById(usuario.getId())).thenReturn(Optional.of(usuario));
-        when(generarPdfService.generarPdfDeLesion(any(Lesion.class))).thenReturn(baos);
+        when(generarPdfService.generarPdfDeLesion(any(Lesion.class), anyList())).thenReturn(baos);
 
         Reporte result = reporteService.generarYEnviarReporte(lesionId);
 
@@ -133,13 +133,13 @@ public class ReporteServiceTest {
         reporte.setDescripcion("Reporte de prueba");
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        when(generarPdfService.generarPdfDeLesion(lesion)).thenReturn(baos);
+        when(generarPdfService.generarPdfDeLesion(lesion, anyList())).thenReturn(baos);
 
         String filePath = reporteService.generarPDFReporte(reporte);
 
         assertNotNull(filePath);
         assertTrue(filePath.contains("Reporte de prueba.pdf"));
-        verify(generarPdfService).generarPdfDeLesion(lesion);
+        verify(generarPdfService).generarPdfDeLesion(lesion, anyList());
     }
 
     @Test

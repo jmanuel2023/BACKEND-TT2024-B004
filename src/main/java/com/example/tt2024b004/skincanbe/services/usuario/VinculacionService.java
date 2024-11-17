@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.tt2024b004.skincanbe.enums.EstadoVinculacion;
 import com.example.tt2024b004.skincanbe.model.usuario.Usuario;
@@ -34,6 +35,21 @@ public class VinculacionService {
         return vinculacionRepository.save(vinculo);
     }
 
+    //Metodo para actualizar el estado de la vinculacion
+    @Transactional
+    public void actualizarEstadoVinculacion(Long pacienteId, Long especialistaId, EstadoVinculacion nuevoEstado) {
+        Vinculacion vinculacion = vinculacionRepository.findByIds(pacienteId, especialistaId);
+        if (vinculacion != null) {
+            vinculacion.setStatus(nuevoEstado);
+            vinculacionRepository.save(vinculacion);
+        }
+    }
+
+
+    @Transactional(readOnly = true)
+    public List<Vinculacion> obtenerEstadoVinculacion(Long pacienteId, Long especialistaId){
+        return vinculacionRepository.findByIdentificadores(pacienteId, especialistaId);
+    }
     public Vinculacion actualizarEstadoVinculacion(Long id, EstadoVinculacion nuevoEstado) {
         Vinculacion vinculo = vinculacionRepository.findById(id)
             .orElseThrow(() -> new NoSuchElementException("Vinculación no encontrada"));

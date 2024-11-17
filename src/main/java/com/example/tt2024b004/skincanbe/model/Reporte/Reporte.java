@@ -35,8 +35,6 @@ public class Reporte {
     @JsonIgnore
     private Lesion lesion;
 
-    /*@OneToMany(mappedBy = "reporte", cascade = CascadeType.ALL)
-    private List<Observacion> observaciones;*/
 
     public Long getId_reporte() {
         return id_reporte;

@@ -14,15 +14,20 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
 import java.io.IOException;
-
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.tt2024b004.skincanbe.DTO.PacienteLesionDTO;
+import com.example.tt2024b004.skincanbe.enums.EstadoVinculacion;
 import com.example.tt2024b004.skincanbe.model.Lesion.Lesion;
 import com.example.tt2024b004.skincanbe.model.usuario.Usuario;
 import com.example.tt2024b004.skincanbe.repository.lesion.LesionRepository;
@@ -61,6 +66,7 @@ public class LesionService {
         }
 
         lesion.setUsuario(usuario);
+        lesion.setFecha(LocalDate.now());
 
         System.out.println("Lesion a guardar: " + lesion);
         return lesionRepository.save(lesion);
@@ -71,4 +77,45 @@ public class LesionService {
         return lesionRepository.findByUsuario_Id(usuarioId);
     }
 
-}
+    public List<PacienteLesionDTO> obtenerLesionesDePacientesConVinculacionAceptadas(Long especialistaId) {
+        String baseUrl = "http://192.168.100.63:8080/images"; // Cambia esto por tu URL base para las imágenes
+    
+        List<Object[]> resultados = usuarioRepository.findPacientesWithLesionesByVinculacionStatus(EstadoVinculacion.ACEPTADO, especialistaId);
+        Map<Long, PacienteLesionDTO> pacientesMap = new HashMap<>();
+    
+        for (Object[] row : resultados) {
+            Long pacienteId = (Long) row[0];
+            String nombre = (String) row[1];
+            String apellidos = (String) row[2];
+            String correo = (String) row[3];
+    
+            // Se crea la lesión
+            Lesion lesion = new Lesion();
+            lesion.setId_lesion((Long) row[4]);
+            lesion.setDescripcion((String) row[5]);
+            lesion.setFecha(((java.sql.Date) row[6]).toLocalDate());
+    
+            // Construir URL completa de la imagen
+            String imagenNombre = (String) row[7];
+            lesion.setImagen(baseUrl + "/" + imagenNombre);
+    
+            lesion.setNombre_lesion((String) row[8]);
+    
+            // Verifica si el paciente ya está en el mapa
+            if (!pacientesMap.containsKey(pacienteId)) {
+                PacienteLesionDTO pacienteDto = new PacienteLesionDTO(pacienteId, nombre, apellidos, correo, new ArrayList<>());
+                pacienteDto.getLesiones().add(lesion);
+                pacientesMap.put(pacienteId, pacienteDto);
+            } else {
+                // Si el paciente ya está en el mapa, simplemente añade la lesión
+                PacienteLesionDTO pacienteDto = pacientesMap.get(pacienteId);
+                pacienteDto.getLesiones().add(lesion);
+            }
+        }
+    
+        // Retorna la lista de PacientesLesionDTO
+        return new ArrayList<>(pacientesMap.values());
+    }
+    
+        
+    }

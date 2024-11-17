@@ -14,7 +14,7 @@ package com.example.tt2024b004.skincanbe.model.usuario;
 import java.time.LocalDate;
 
 import com.example.tt2024b004.skincanbe.enums.EstadoVinculacion;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -30,6 +30,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Vinculacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,15 +38,15 @@ public class Vinculacion {
 
     @ManyToOne
     @JoinColumn(name = "paciente_id")
-    @JsonManagedReference
+    //@JsonManagedReference
     private Paciente paciente;
 
     @ManyToOne
     @JoinColumn(name = "especialista_id")
-    @JsonManagedReference
+    //@JsonManagedReference
     private Especialista especialista;
 
-    private LocalDate fechaVinculacion; // Almacena la fecha de vinculación
+    private LocalDate fechaVinculacion; 
     
     @Enumerated(EnumType.STRING)
     private EstadoVinculacion status;

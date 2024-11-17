@@ -25,8 +25,11 @@ import com.example.tt2024b004.skincanbe.model.usuario.Especialista;
 import com.example.tt2024b004.skincanbe.model.usuario.Paciente;
 import com.example.tt2024b004.skincanbe.model.usuario.TokenVerificacion;
 import com.example.tt2024b004.skincanbe.model.usuario.Usuario;
+import com.example.tt2024b004.skincanbe.repository.lesion.LesionRepository;
+import com.example.tt2024b004.skincanbe.repository.observacion.ObservacionRepository;
 import com.example.tt2024b004.skincanbe.repository.usuario.TokenVerificacionRepository;
 import com.example.tt2024b004.skincanbe.repository.usuario.UsuarioRepository;
+import com.example.tt2024b004.skincanbe.repository.usuario.VinculacionRepository;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -36,6 +39,18 @@ public class UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private LesionRepository lesionRepository;
+
+    @Autowired
+    private VinculacionRepository vinculacionRepository;
+
+    @Autowired
+    private ObservacionRepository observacionRepository;
+
+    @Autowired
+    private TokenVerificacionRepository tokenVerificacionRepository;
 
     @Autowired
     private TokenVerificacionRepository tkVrfRepository;
@@ -142,6 +157,65 @@ public class UsuarioService {
     public Usuario actualizarUsuario(Usuario usuario) {
         return usuarioRepository.save(usuario);
     }
+
+    @Transactional(readOnly= true)
+    public Optional<Usuario> obtenerDatosUsuarioPorId(Long usuario_id){
+        return usuarioRepository.findById(usuario_id);
+    }
+
+
+    @Transactional
+    public Usuario editarUsuario(Map<String, String> payload){
+        Long id = Long.parseLong(payload.get("id_usuario"));
+        String nombreNuevo = (String) payload.get("nombreNuevo");
+        String apellidosNuevo = (String) payload.get("apellidosNuevo");
+        String passNuevo = (String) payload.get("contraNueva");
+        System.out.println("Contraseña nueva: "+ passNuevo);
+
+        Optional<Usuario> usuarioEncontrado = usuarioRepository.findById(id);
+
+        if (usuarioEncontrado.isPresent()) {
+            System.out.println("Usuario con Id encontrado");
+
+            usuarioEncontrado.get().setNombre(nombreNuevo);
+            usuarioEncontrado.get().setApellidos(apellidosNuevo);
+            if (!passNuevo.equals("Sin cambios")) {
+                usuarioEncontrado.get().setPassword(passwordEncoder.encode(passNuevo));
+            }
+
+            return usuarioRepository.save(usuarioEncontrado.get());
+        }
+        else{
+            return null;
+        }
+    }
+
+    @Transactional
+    public String eliminarUsuario(Long usuarioId) {
+        Optional<Usuario> usuarioOpt = usuarioRepository.findById(usuarioId);
+        if (usuarioOpt.isPresent()) {
+            Usuario usuario = usuarioOpt.get();
+    
+            if (usuario instanceof Especialista especialista) {
+                vinculacionRepository.deleteAllByEspecialista(especialista);
+            }
+    
+            if (usuario instanceof Paciente paciente) {
+                vinculacionRepository.deleteAllByPaciente(paciente);
+            }
+    
+            // Eliminar otras relaciones y finalmente el usuario
+            lesionRepository.deleteAllByUsuario(usuario);
+            observacionRepository.deleteAllByUsuario(usuario);
+            tokenVerificacionRepository.deleteByUsuario(usuario);
+            usuarioRepository.delete(usuario);
+            return "Usuario eliminado correctamente.";
+        } else {
+            throw new RuntimeException("Usuario no encontrado");
+        }
+    }
+    
+
 
     public Usuario crearUsuario(Map<String, Object> payload) throws MessagingException {
         String tipoUsuario = (String) payload.get("tipo_usuario");

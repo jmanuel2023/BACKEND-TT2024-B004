@@ -40,6 +40,7 @@ public class VinculacionController {
     @Autowired
     private VinculacionService vinculacionService;
 
+
     @PostMapping("/vinculos/crear")
     public ResponseEntity<Vinculacion> crearVinculo(@RequestBody Vinculacion vinculo) {
         System.out.println("Entre al metodo crearVinculo del controlador");
@@ -69,5 +70,31 @@ public class VinculacionController {
         List<Usuario> solicitudesPendientes = vinculacionService.obtenerSolicitudesPendientes(especialistaId);
         System.out.println(solicitudesPendientes);
         return new ResponseEntity<>(solicitudesPendientes, HttpStatus.OK);
+    }
+
+    @GetMapping("/vinculos/estado/{pacienteId}/{especialistaId}")
+    public ResponseEntity<List<Vinculacion>> obtenerEstadoVinculacion(@PathVariable Long pacienteId, @PathVariable Long especialistaId){
+        System.out.println("Entre al metodo obtenerEstadoVinculacion, sirve el initState");
+        System.out.println(pacienteId);
+        System.out.println(especialistaId);
+        List<Vinculacion> vinculacionEstado = vinculacionService.obtenerEstadoVinculacion(pacienteId, especialistaId);
+        System.out.println(vinculacionEstado);
+        return new ResponseEntity<>(vinculacionEstado, HttpStatus.OK);
+    }
+
+    @PutMapping("vinculacion/aceptar/{pacienteId}/{especialistaId}")
+    public ResponseEntity<String> aceptarVinculacion(
+            @PathVariable Long pacienteId, 
+            @PathVariable Long especialistaId) {
+        vinculacionService.actualizarEstadoVinculacion(pacienteId, especialistaId, EstadoVinculacion.ACEPTADO);
+        return new ResponseEntity<>("Vinculación aceptada", HttpStatus.OK);
+    }
+
+    @PutMapping("vinculacion/rechazar/{pacienteId}/{especialistaId}")
+    public ResponseEntity<String> rechazarVinculacion(
+            @PathVariable Long pacienteId, 
+            @PathVariable Long especialistaId) {
+        vinculacionService.actualizarEstadoVinculacion(pacienteId, especialistaId, EstadoVinculacion.RECHAZADO);
+        return new ResponseEntity<>("Vinculación rechazada", HttpStatus.OK);
     }
 }

@@ -3,6 +3,7 @@ package com.example.tt2024b004.skincanbe.repository.reporte;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -52,7 +53,7 @@ public class ReporteRepositoryTest {
         testEntityManager.persist(usuario);
 
         lesionprueba = new Lesion();
-        lesionprueba.setTipo("Maligna");
+        lesionprueba.setFecha(LocalDate.now());
         lesionprueba.setNombre_lesion("Carcinoma Basocelular");
         lesionprueba.setDescripcion("Lesión de carcinoma basocelular");
         lesionprueba.setUsuario(usuario);

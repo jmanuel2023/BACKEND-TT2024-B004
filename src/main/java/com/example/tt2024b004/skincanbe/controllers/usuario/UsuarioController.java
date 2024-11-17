@@ -12,15 +12,18 @@
 package com.example.tt2024b004.skincanbe.controllers.usuario;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -86,6 +89,34 @@ public class UsuarioController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @GetMapping("/usuario/{idUsuario}")
+    public ResponseEntity<?> obtenerUsuarioPorId(@PathVariable Long idUsuario) throws Exception{
+        try {
+            Optional<Usuario> usuarioDatos = usuarioService.obtenerDatosUsuarioPorId(idUsuario);
+            return ResponseEntity.ok(usuarioDatos.get());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+
+
+    @PutMapping("/editar")
+    public ResponseEntity<?> editarUsuario(@RequestBody Map<String,String> payload) throws Exception{
+        try {
+            Usuario usuario = usuarioService.editarUsuario(payload);
+            return ResponseEntity.ok(usuario);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> eliminarUsuario(@PathVariable Long id){
+        String mensaje = usuarioService.eliminarUsuario(id);
+         return ResponseEntity.ok(mensaje);
     }
 
     @PostMapping("/forgotpassword")

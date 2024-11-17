@@ -13,19 +13,19 @@ package com.example.tt2024b004.skincanbe.services.reporte;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.tt2024b004.skincanbe.model.Lesion.Lesion;
-import com.example.tt2024b004.skincanbe.model.Reporte.Reporte;
+import com.example.tt2024b004.skincanbe.model.Observacion.Observacion;
 import com.example.tt2024b004.skincanbe.model.usuario.Usuario;
 import com.example.tt2024b004.skincanbe.repository.lesion.LesionRepository;
-import com.example.tt2024b004.skincanbe.repository.reporte.ReporteRepository;
-import com.example.tt2024b004.skincanbe.services.usuario.UsuarioService;
+import com.example.tt2024b004.skincanbe.repository.observacion.ObservacionRepository;
+import com.example.tt2024b004.skincanbe.repository.usuario.UsuarioRepository;
+import com.example.tt2024b004.skincanbe.services.observacion.ObservacionService;
 
 @Service
 public class ReporteService {
@@ -34,72 +34,60 @@ public class ReporteService {
 
     @Autowired
     private LesionRepository lesionRepository;
+ 
     @Autowired
-    private ReporteRepository reporteRepository;
+    private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private ObservacionRepository observacionRepository;
+
     @Autowired
     private EmailService emailService;
     @Autowired
-    private UsuarioService usuarioService;
+    private ObservacionService observacionService;
     
     @Autowired
     private GenerarPdfService generarPdfService;
 
-    public Reporte generarYEnviarReporte(Long lesionId) throws Exception {
+    public void generarYEnviarReporte(Long lesionId) throws Exception {
         System.out.println("Inicio del metodo generarYEnviarReporte");
+        
         Lesion lesion = lesionRepository.findById(lesionId)
                 .orElseThrow(() -> new RuntimeException("Lesión no encontrada"));
 
         // Verificar si ya existe un reporte asociado
-        Optional<Reporte> existeReporte = reporteRepository.findByLesion(lesion);
-        if (existeReporte.isPresent()) {
-            // Si ya existe, retornar el reporte existente
-            System.out.println("Ya existe el reporte");
-            String rutacompleta=rutaReporte + existeReporte.get().getDescripcion()+".pdf";
-            System.out.println(rutacompleta);
-            enviarCorreoReporte(existeReporte.get(), rutacompleta);
-            return existeReporte.get();
-        } else {
-            // Crear y guardar el nuevo reporte
-            System.out.println("No existe el reporte, se creará");
-            Reporte nuevoReporte = new Reporte();
-            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-            nuevoReporte.setLesion(lesion);
-
-            Optional<Usuario> usuario = usuarioService.findById(lesion.getUsuario().getId());
-            if (usuario.isPresent()) {
-                System.out.println("Existe el usuario relacionado con la lesion");
-                nuevoReporte.setFecha_generacion(LocalDateTime.now().format(formato));
-                System.out.println(LocalDateTime.now().format(formato));
-                nuevoReporte.setDescripcion("Reporte de la lesion del Paciente " + usuario.get().getNombre() + " "
-                        + usuario.get().getApellidos()+" "+lesion.getId_lesion());
-                System.out.println(usuario.get().getNombre());
-                System.out.println(usuario.get().getApellidos());
-                String file = generarPDFReporte(nuevoReporte);
-                System.out.println(file);
-                reporteRepository.save(nuevoReporte);
-                System.out.println("Se ha guardado el reporte");
-                // Enviar el PDF por correo
-                enviarCorreoReporte(nuevoReporte, file);
-                System.out.println("Se ha mandado el correo electrónico");
-                return nuevoReporte;
-            } else {
-                System.out.println("No existe usuario relacionado con la lesión");
-                return null;
-            }
+        Optional<Usuario> usuario = usuarioRepository.findById(lesion.getUsuario().getId());
+        if (usuario.isPresent()) {
+            System.out.println("Existe el usuario relacionado con la lesion");
+            String descripcion= "Reporte de la lesion del Paciente " + usuario.get().getNombre() + " "
+            + usuario.get().getApellidos() + " " + lesion.getId_lesion();
+            System.out.println("Generando el PDF del reporte ...");
+            String file = generarPDFReporte(descripcion, lesion);
+            
+            System.out.println("Enviando el correo con el reporte adjunto...");
+            enviarCorreoReporte(lesion, file);
+            System.out.println("Correo electronico enviado exitosamente.");
+        }else{
+            System.out.println("No existe usuario relacionado con la lesión...");
         }
     }
 
-    public String generarPDFReporte(Reporte reporte) throws IOException {
+    public String generarPDFReporte(String descripcion, Lesion lesion) throws IOException {
         System.out.println("Inicio del metodo generarPDFReporte");
-        Lesion lesion = reporte.getLesion();
+
         if (lesion == null) {
             System.out.println("El reporte no tiene lesión asociada");
             throw new IllegalArgumentException("El reporte no tiene una lesion asociada");
         } else {
-            System.out.println("Se empieza a generar el reporte");
-            ByteArrayOutputStream baos = generarPdfService.generarPdfDeLesion(lesion);
-            String filePath = rutaReporte + reporte.getDescripcion() + ".pdf"; // Asumiendo que el reporte tiene un ID
-            System.out.println(filePath);
+            List<Long> observacionesPorLesion= observacionRepository.findByIdPorUsuario(lesion.getId_lesion());
+            System.out.println("ID de la lesion: " + lesion.getId_lesion());
+            System.out.println("ID del usuario: " + lesion.getUsuario().getId());
+            List<Observacion> listaObservaciones = observacionService.obtenerHistorialObservaciones(lesion.getId_lesion(), observacionesPorLesion);
+            
+            System.out.println("Generando el archivo PDF...");
+            ByteArrayOutputStream baos = generarPdfService.generarPdfDeLesion(lesion, listaObservaciones);
+            String filePath = rutaReporte + descripcion + ".pdf"; // Asumiendo que el reporte tiene un ID
+            System.out.println("Ruta del archivo PDF: "+ filePath);
             try (FileOutputStream fos = new FileOutputStream(filePath)) {
                 baos.writeTo(fos);
             }
@@ -108,16 +96,16 @@ public class ReporteService {
         }
     }
 
-    public void enviarCorreoReporte(Reporte reporte, String archivo) throws Exception {
+    public void enviarCorreoReporte(Lesion lesion, String archivo) throws Exception {
         // Configurar y enviar el correo electrónico con el PDF adjunto
         System.out.println("Inicio del metodo enviarCorreoReporte");
-        String destinatario = reporte.getLesion().getUsuario().getCorreo();
-        System.out.println(destinatario);
-        String asunto = "Reporte de Lesión: " + reporte.getLesion().getNombre_lesion();
-        System.out.println(asunto);
+        String destinatario = lesion.getUsuario().getCorreo();
+        System.out.println("Destinatario: "+destinatario);
+        String asunto = "Reporte de Lesión: " + lesion.getNombre_lesion();
+        System.out.println("Asunto: "+ asunto);
         String mensaje = "Hola, adjuntamos el reporte en formato pdf de la lesión solicitada."
-                + "Equipo de Skincanbe.Saludos";
-        System.out.println(mensaje);
+                + "\nEquipo de Skincanbe.\nSaludos";
+        System.out.println("Mensaje" + mensaje);
 
         emailService.sendEmailWithAttachment(destinatario, asunto, mensaje,archivo);
     }

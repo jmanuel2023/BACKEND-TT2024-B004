@@ -11,8 +11,10 @@
 package com.example.tt2024b004.skincanbe.controllers.lesion;
 
 import java.io.IOException;
-
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.tt2024b004.skincanbe.DTO.PacienteLesionDTO;
 import com.example.tt2024b004.skincanbe.model.Lesion.Lesion;
 import com.example.tt2024b004.skincanbe.services.lesion.LesionService;
 
@@ -34,6 +37,12 @@ public class LesionController {
 
     @Autowired
     private LesionService lesionService;
+
+    @GetMapping("/pacientes-vinculados-aceptados/{especialistaId}")
+    public List<PacienteLesionDTO> obtenerLesionesDePacientesConVinculacionAceptada(@PathVariable Long especialistaId) {
+        System.out.println("ENTRE EN EL METODO PARA OBTENER LOS PACIENTES VINCULADOS ACEPTADOS");
+        return lesionService.obtenerLesionesDePacientesConVinculacionAceptadas(especialistaId);
+    }
 
     @PostMapping("/register-injury")
     public ResponseEntity<Lesion> registrarLesion(
@@ -51,10 +60,23 @@ public class LesionController {
         }
     }
 
-    @GetMapping("/{usuarioId}")
-    public ResponseEntity<List<Lesion>> obtenerLesionesPorUsuarioId(@PathVariable Long usuarioId) {
-        List<Lesion> lesiones = lesionService.obtenerLesionesPorUsuarioId(usuarioId);
-        return ResponseEntity.ok(lesiones);
-    }
+   @GetMapping("/{usuarioId}")
+public ResponseEntity<List<Map<String, Object>>> obtenerLesionesPorUsuarioId(@PathVariable Long usuarioId) {
+    List<Lesion> lesiones = lesionService.obtenerLesionesPorUsuarioId(usuarioId);
+
+    List<Map<String, Object>> response = lesiones.stream().map(lesion -> {
+        Map<String, Object> lesionData = new HashMap<>();
+        lesionData.put("id_lesion", lesion.getId_lesion());
+        lesionData.put("fecha", lesion.getFecha());
+        lesionData.put("nombre_lesion", lesion.getNombre_lesion());
+        lesionData.put("descripcion", lesion.getDescripcion());
+        // Aquí generas la URL completa
+        lesionData.put("imagen", "http://192.168.100.63:8080/images/" + lesion.getImagen());
+        return lesionData;
+    }).collect(Collectors.toList());
+
+    return ResponseEntity.ok(response);
+}
+
 
 }

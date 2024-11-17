@@ -13,7 +13,7 @@ package com.example.tt2024b004.skincanbe.model.usuario;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.DiscriminatorValue;
@@ -35,7 +35,7 @@ public class Especialista extends Usuario{
     private String cedula;
 
     @OneToMany(mappedBy = "especialista", cascade = CascadeType.ALL)
-    @JsonBackReference
+    @JsonIgnore
     private List<Vinculacion> vinculos;
     
 }

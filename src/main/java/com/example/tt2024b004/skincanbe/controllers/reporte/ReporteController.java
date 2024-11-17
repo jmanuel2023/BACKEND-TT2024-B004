@@ -33,7 +33,7 @@ public class ReporteController {
     public ResponseEntity<String> generaryenviarReporte(@PathVariable Long lesionId) {
         try {
             reporteService.generarYEnviarReporte(lesionId);
-            return ResponseEntity.ok("Reporte generado y enviado correctamente.");
+            return ResponseEntity.ok("Reporte enviado correctamente.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al generar o enviar el reporte.");
         }

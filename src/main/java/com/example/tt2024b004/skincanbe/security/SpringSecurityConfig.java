@@ -66,6 +66,7 @@ public class SpringSecurityConfig {
                 .requestMatchers("/reset-password").permitAll()
                 .requestMatchers("/register-injury").permitAll()
                 .requestMatchers("/{usuarioId}").permitAll()
+                .requestMatchers("/images/**").permitAll()
                 .anyRequest().authenticated())
                  .addFilter(new JwtAuthenticationFilter(authenticationManager()))
                  .addFilter(new JwtValidationFilter(authenticationManager()))

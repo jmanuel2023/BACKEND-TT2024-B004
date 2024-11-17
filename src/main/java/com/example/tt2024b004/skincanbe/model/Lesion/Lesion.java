@@ -11,18 +11,17 @@
  */
 package com.example.tt2024b004.skincanbe.model.Lesion;
 
-import com.example.tt2024b004.skincanbe.model.Reporte.Reporte;
+import java.time.LocalDate;
+
 import com.example.tt2024b004.skincanbe.model.usuario.Usuario;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -34,7 +33,7 @@ public class Lesion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_lesion;
 
-    private String tipo;
+    private LocalDate fecha;
     private String nombre_lesion;
     private String descripcion;
     private String imagen;
@@ -44,10 +43,4 @@ public class Lesion {
     @JoinColumn(name="usuario_id")
     private Usuario usuario;
 
-    @OneToOne(mappedBy = "lesion", cascade = CascadeType.ALL)
-    private Reporte reporte;
-
-    
-
-    
 }
