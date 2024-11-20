@@ -241,6 +241,11 @@ public class UsuarioService {
             usuario.setCorreo((String) payload.get("correo"));
             String passwordN = (String) payload.get("password");
             String passwordEncoded = passwordEncoder.encode(passwordN);
+
+        System.out.println("contra123 -> " + passwordEncoder.encode("contra123"));
+        System.out.println("contra234 -> " + passwordEncoder.encode("contra234"));
+        System.out.println("contra345 -> " + passwordEncoder.encode("contra345"));
+        System.out.println("contra456  -> " + passwordEncoder.encode("contra456"));
             usuario.setPassword(passwordEncoded);
 
             // Guardar el usuario en la base de datos
