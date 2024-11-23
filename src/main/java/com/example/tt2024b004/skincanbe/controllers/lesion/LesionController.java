@@ -49,10 +49,11 @@ public class LesionController {
             @RequestParam("id_usuario") Long usuarioId,
             @RequestParam("nombre_lesion") String nombreLesion,
             @RequestParam("descripcion") String descripcion,
+            @RequestParam("porcentaje") String porcentaje,
             @RequestParam("imagen") MultipartFile imagen) throws IOException {
         System.out.println("Ya estoy en el controlador de la lesion");
         try {
-            Lesion lesion = lesionService.guardarLesion(usuarioId, nombreLesion, descripcion, imagen);
+            Lesion lesion = lesionService.guardarLesion(usuarioId, nombreLesion, descripcion, imagen, porcentaje);
             System.out.println("despues de la llamada del servicio");
             return ResponseEntity.status(HttpStatus.CREATED).body(lesion);
         } catch (IllegalArgumentException e) {
@@ -70,6 +71,7 @@ public ResponseEntity<List<Map<String, Object>>> obtenerLesionesPorUsuarioId(@Pa
         lesionData.put("fecha", lesion.getFecha());
         lesionData.put("nombre_lesion", lesion.getNombre_lesion());
         lesionData.put("descripcion", lesion.getDescripcion());
+        lesionData.put("porcentaje", lesion.getPorcentaje());
         // Aquí generas la URL completa
         lesionData.put("imagen", "http://192.168.100.63:8080/images/" + lesion.getImagen());
         return lesionData;

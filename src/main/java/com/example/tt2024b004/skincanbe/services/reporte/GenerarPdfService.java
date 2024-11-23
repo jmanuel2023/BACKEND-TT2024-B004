@@ -108,6 +108,8 @@ public class GenerarPdfService {
         document.add(new Paragraph("Datos de la lesión").setBold().setFontSize(14));
         document.add(new Paragraph("Nombre: " + lesion.getNombre_lesion()));
         document.add(new Paragraph("Descripción: " + lesion.getDescripcion()));
+        document.add(new Paragraph("Porcentaje de coincidencia: " + lesion.getPorcentaje()));
+
 
         // Agregar imagen (si existe)
         if (lesion.getImagen() != null) {

@@ -45,7 +45,7 @@ public class LesionService {
 
     //Guardar lesion
     @Transactional
-    public Lesion guardarLesion(Long idUsuario, String nombreLesion, String descripcion, MultipartFile imagen) throws IOException{
+    public Lesion guardarLesion(Long idUsuario, String nombreLesion, String descripcion, MultipartFile imagen, String porcentaje) throws IOException{
         
         Usuario usuario = usuarioRepository.findById(idUsuario).
         orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
@@ -55,6 +55,7 @@ public class LesionService {
 
         lesion.setNombre_lesion(nombreLesion);
         lesion.setDescripcion(descripcion);
+        lesion.setPorcentaje(porcentaje);
 
         if(!imagen.isEmpty()){
             String imageFileName = System.currentTimeMillis() + "_"+ imagen.getOriginalFilename();
@@ -100,6 +101,7 @@ public class LesionService {
             lesion.setImagen(baseUrl + "/" + imagenNombre);
     
             lesion.setNombre_lesion((String) row[8]);
+            lesion.setPorcentaje((String) row[10]);
     
             // Verifica si el paciente ya está en el mapa
             if (!pacientesMap.containsKey(pacienteId)) {

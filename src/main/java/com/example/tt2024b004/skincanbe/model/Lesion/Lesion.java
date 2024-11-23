@@ -36,6 +36,7 @@ public class Lesion {
     private LocalDate fecha;
     private String nombre_lesion;
     private String descripcion;
+    private String porcentaje;
     private String imagen;
 
     @ManyToOne
